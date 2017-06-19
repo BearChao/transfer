@@ -1,0 +1,20 @@
+[
+  {
+    "t": "工作台",
+    "url": "page/desktop.html"
+  },
+  {
+    "t": "表格",
+    "url": "",
+    "child": [
+      {
+        "t": "基本表格",
+        "url": "table/table1.html"
+      },
+      {
+        "t": "DataTables",
+        "url": "table/table2.html"
+      }
+    ]
+  }
+]
