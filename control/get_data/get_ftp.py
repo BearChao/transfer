@@ -67,14 +67,18 @@ class FTPSync(object):
       file_name = os.path.basename(ftp_path)
       #如果本地路径是目录，下载文件到该目录
       if os.path.isdir(local_path):
-        file_handler = open(os.path.join(local_path, file_name +'.' + self.id_str), 'wb')
+        file_name = file_name+'.' + self.id_str
+        file_handler = open(os.path.join(local_path, file_name), 'wb')
         self.conn.retrbinary("RETR %s" %(ftp_path), file_handler.write)
         file_handler.close()
+        return file_name
       #如果本地路径不是目录，但上层目录存在，则按照本地路径的文件名作为下载的文件名称
       elif os.path.isdir(os.path.dirname(local_path)):
-        file_handler = open(local_path, 'wb' )
+        file_name = local_path + '.' + self.id_str
+        file_handler = open(file_name, 'wb' )
         self.conn.retrbinary("RETR %s" %(ftp_path), file_handler.write)
         file_handler.close()
+        return file_name
       #如果本地路径不是目录，且上层目录不存在，则退出
       else:
         print('EROOR:The dir:%s is not exist' %os.path.dirname(local_path))
@@ -101,6 +105,7 @@ class FTPSync(object):
       print('ERROR:The file:%s is not exist' %local_path)
   def get_dir(self,ftp_path,local_path='.',begin=True):
     ftp_path = ftp_path.rstrip('/')
+    file_list = []
     #当ftp目录存在时下载
     if self._is_ftp_dir(ftp_path):
       #如果下载到本地当前目录下，并创建目录
@@ -120,13 +125,13 @@ class FTPSync(object):
         if self._is_ftp_dir(file):
           self.get_dir(file,local_file,False)
         else:
-          self.get_file(file,local_file)
+            file_list.append(self.get_file(file,local_file))
       #如果当前ftp目录文件已经遍历完毕返回上一层目录
       self.conn.cwd( ".." )
-      return
+      return []
     else:
       print('ERROR:The dir:%s is not exist' %ftp_path)
-      return
+      return []
 
   def put_dir(self,local_path,ftp_path='.',begin=True):
     ftp_path = ftp_path.rstrip('/')

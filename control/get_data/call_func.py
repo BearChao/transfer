@@ -8,15 +8,18 @@
 from get_data import get_file
 from model.Config import DATATYPE
 
+from control.get_data import get_ftp
+
 
 def getDataFile(configItem):
     '''
     根据传递的config item选择对应的服务，然后将获取的数据按照规则保存到本地
-    :return:文件列表list
+    :return:本地文件列表list，已经修改名字，保持原有目录结构
     '''
     files = []
     type = configItem.dataType
     if type == DATATYPE.FTP.value:
+        return get_ftp.getFTP(configItem)
         pass
     elif type == DATATYPE.MYSQL.value:
         pass

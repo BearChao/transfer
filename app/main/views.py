@@ -3,7 +3,6 @@ import math
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user
 from app import utils
-from app.models import CfgNotify
 from app.main.forms import CfgNotifyForm
 from . import main
 
@@ -71,19 +70,6 @@ def common_edit(DynamicModel, form, view):
 #@login_required
 def index():
     return render_template('index.html', current_user=current_user)
-
-# 通知方式查询
-@main.route('/notifylist', methods=['GET', 'POST'])
-@login_required
-def notifylist():
-    return common_list(CfgNotify, 'notifylist.html')
-
-
-# 通知方式配置
-@main.route('/notifyedit', methods=['GET', 'POST'])
-@login_required
-def notifyedit():
-    return common_edit(CfgNotify, CfgNotifyForm(), 'notifyedit.html')
 
 @main.route('/json/nav')
 def nav():

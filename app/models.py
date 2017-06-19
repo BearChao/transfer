@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from peewee import MySQLDatabase, Model, CharField, BooleanField, IntegerField
+from peewee import  Model, CharField, BooleanField, IntegerField
 import json
+from playhouse.sqlite_ext import SqliteExtDatabase
 from werkzeug.security import check_password_hash
 from flask_login import UserMixin
 from app import login_manager
@@ -10,7 +11,7 @@ import os
 
 cfg = config[os.getenv('FLASK_CONFIG') or 'default']
 
-db = MySQLDatabase(host=cfg.DB_HOST, user=cfg.DB_USER, passwd=cfg.DB_PASSWD, database=cfg.DB_DATABASE)
+db = SqliteExtDatabase('config.db')
 
 
 class BaseModel(Model):
@@ -40,25 +41,25 @@ class User(UserMixin, BaseModel):
     def verify_password(self, raw_password):
         return check_password_hash(self.password, raw_password)
 
-
-# 通知人配置
-class CfgNotify(BaseModel):
-    check_order = IntegerField()  # 排序
-    notify_type = CharField()  # 通知类型：MAIL/SMS
-    notify_name = CharField()  # 通知人姓名
-    notify_number = CharField()  # 通知号码
-    status = BooleanField(default=True)  # 生效失效标识
-
+#配置文件
+class Config(BaseModel):
+    name = CharField()  #任务名称
+    dataType = CharField() #任务类型
+    dir = CharField() #文件目录或者host地址
+    username = CharField() #用户名
+    password = CharField() #密码
+    target = CharField() #目标文件夹或者数据库名
+    port = CharField() #端口号
+    tables = CharField() #数据表，空格间隔
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.get(User.id == int(user_id))
 
-
 # 建表
 def create_table():
     db.connect()
-    db.create_tables([CfgNotify, User])
+    db.create_tables([User,Config])
 
 
 if __name__ == '__main__':

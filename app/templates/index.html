@@ -51,11 +51,11 @@
         <script id="nav_tpl" type="text/html">
             <ul>
                 [{foreach nav as bigMenu i}]
-                <li><a href="#[{bigMenu.url}]"><i class="fa fa-lg fa-fw fa-file-text"></i><span>[{bigMenu.t}]</span>[{if bigMenu.child && bigMenu.child.length >= 1}]<b><i class="fa fa-plus-square-o"></i></b>[{/if}]</a>
+                <li><a href="#[{bigMenu.url}]"><i class="[{bigMenu.i}]"></i><span>[{bigMenu.t}]</span>[{if bigMenu.child && bigMenu.child.length >= 1}]<b><i class="fa fa-plus-square-o"></i></b>[{/if}]</a>
                     [{if bigMenu.child && bigMenu.child.length >= 1}]
                     <ul>
                         [{foreach bigMenu.child as medMenu j}]
-                        <li><a href="#[{medMenu.url}]"><i class="fa fa-fw fa-file"></i><span>[{medMenu.t}]</span>[{if medMenu.child && medMenu.child.length >= 1}]<b><i class="fa fa-plus-square-o"></i></b>[{/if}]</a>
+                        <li><a href="#[{medMenu.url}]"><i class="[{medMenu.i}]"></i><span>[{medMenu.t}]</span>[{if medMenu.child && medMenu.child.length >= 1}]<b><i class="fa fa-plus-square-o"></i></b>[{/if}]</a>
                             [{if medMenu.child && medMenu.child.length >= 1}]
                             <ul>
                                 [{foreach medMenu.child as minMenu k}]

@@ -1,19 +1,45 @@
 [
   {
     "t": "工作台",
-    "url": "page/desktop.html"
+    "url": "home",
+    "i": "fa fa-fw fa-home"
   },
   {
-    "t": "表格",
+    "t": "任务管理",
     "url": "",
+    "i": "fa fa-fw fa-task",
     "child": [
       {
         "t": "基本表格",
-        "url": "table/table1.html"
+        "url": "table/table1.html",
+        "i": "fa fa-fw fa-file"
       },
       {
         "t": "DataTables",
-        "url": "table/table2.html"
+        "url": "table/table2.html",
+        "i": "fa fa-fw fa-file"
+      }
+    ]
+  },
+  {
+    "t": "日志管理",
+    "url": "",
+    "i": "fa fa-fw fa-twitter",
+    "child": [
+      {
+        "t": "任务执行日志",
+        "url": "log/task",
+        "i": "fa fa-fw fa-file"
+      },
+      {
+        "t": "文件传输日志",
+        "url":"log/file",
+        "i": "fa fa-fw fa-file"
+      },
+      {
+        "t": "清理日志",
+        "url": "log/delete",
+        "i":"fa fa-fw fa-file"
       }
     ]
   }
