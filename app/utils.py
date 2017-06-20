@@ -8,7 +8,7 @@ from flask import Response, flash
 
 
 ## 字符串转字典
-from app.models import Config
+from app.models import Task
 
 
 def str_to_dict(dict_str):
@@ -82,7 +82,7 @@ def jsonresp(jsonobj=None, status=200, errinfo=None):
 # 通过名称获取PEEWEE模型
 def get_model_by_name(model_name):
     if model_name == 'configs':
-        DynamicModel = Config
+        DynamicModel = Task
     else:
         DynamicModel = None
     return DynamicModel

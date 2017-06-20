@@ -67,7 +67,7 @@ def common_edit(DynamicModel, form, view):
 
 # 首页跳转
 @main.route('/', methods=['GET'])
-#@login_required
+@login_required
 def index():
     return render_template('index.html', current_user=current_user)
 

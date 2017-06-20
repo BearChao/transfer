@@ -1,0 +1,6 @@
+{
+  "referer": "{{referer}}",
+  "refresh": true,
+  "state": "{{state}}",
+  "message": "{{message}}"
+}

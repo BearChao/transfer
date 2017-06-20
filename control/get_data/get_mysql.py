@@ -8,10 +8,10 @@
 import pickle
 import mysql.connector
 
-from app.models import Config
+from app.models import Task
 
 
-def getMysql(configItem):
+def getMySQL(configItem):
 
     db = MySQLClient(host=configItem.dir,username=configItem.username,password=configItem.password,database=configItem.target)
     if configItem.tables is None or configItem.tables == '':
@@ -81,7 +81,7 @@ class MySQLClient:
 
 if __name__ == '__main__':
     db = MySQLClient(host='139.199.212.48',username='root',password='123456',database='test')
-    item = Config()
+    item = Task()
     item.dir = '139.199.212.48'
     item.username = 'root'
     item.password = '123456'

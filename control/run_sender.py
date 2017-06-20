@@ -7,23 +7,24 @@
 # @Software: PyCharm
 import sys
 
-from common import LOGS
-from common.file_sender import sendFile
-from get_data.call_func import getDataFile
-from model.Config import Config
+from app.models import Task, db
+from control.common import LOGS
+from control.common.file_sender import sendFile
+from control.get_data.call_func import getDataFile
 
 
 def run(id):
     #解析任务
-    conf = Config()
-    conf.load()
-    task = conf.getConfigItem(id)
+    db.connect()
+    task = Task.get(Task.finger == id)
     if task is None:
         LOGS.error('找不到对应任务：'+str(id))
         exit(-1)
+    else:
+        task = task[0]
+    db.close()
     LOGS.info('开始任务：' + str(id)+":"+task.name)
 
-    #todo 获取文件
     files = getDataFile(task)
 
     #发送文件

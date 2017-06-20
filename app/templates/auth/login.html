@@ -22,8 +22,8 @@
 <div class="container">
     <form class="form-signin" method="post">
      {{form.hidden_tag()}}
-        <div class="logo animated bounceIn"><img src="./logo.png"/></div>
-        <h3>欢迎使用BG-UI</h3>
+        <div class="logo animated bounceIn"><img src="{{url_for('static', filename='images/logo.png')}}"/></div>
+        <h3>欢迎使用光安全单向传输系统管理控制台</h3>
         <div class="form-group">
             {{form.username(class_="form-control",placeholder="用户名",required="required",autofocus="autofocus")}}
         </div>
@@ -40,7 +40,7 @@
 
         {{form.submit(class_="btn btn-lg btn-primary btn-block subBtn")}}
 
-        <div class="help"><i class="fa fa-lightbulb-o"></i> 此为静态演示，可以直接<a href="./index"><b>进入后台演示</b></a></div>
+        <div class="help"><i class="fa fa-lightbulb-o"></i> 本系统为外网端<a href="./index"><b>进入后台演示</b></a></div>
         <div class="copyright"><i class="fa fa-copyright"></i><a href="http://www.qq.com/liyu365">XX公司</a></div>
     </form>
 </div>

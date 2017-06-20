@@ -11,10 +11,10 @@ import os,sys,string,datetime,time
 import socket
 
 
-def getFTP(configItem):
-    conn = FTPSync(configItem.target,configItem.port,str(configItem.id))
-    conn.login(configItem.username,configItem.password)
-    conn.get_dir(configItem.dir,'temp')
+def getFTP(task):
+    conn = FTPSync(task.target, task.port, str(task.finger))
+    conn.login(task.username, task.password)
+    conn.get_dir(task.dir, 'temp')
 
 class FTPSync(object):
   conn = ftplib.FTP()

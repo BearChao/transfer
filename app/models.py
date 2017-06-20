@@ -11,7 +11,7 @@ import os
 
 cfg = config[os.getenv('FLASK_CONFIG') or 'default']
 
-db = SqliteExtDatabase('config.db')
+db = SqliteExtDatabase('conf/config.db')
 
 
 class BaseModel(Model):
@@ -42,7 +42,8 @@ class User(UserMixin, BaseModel):
         return check_password_hash(self.password, raw_password)
 
 #配置文件
-class Config(BaseModel):
+class Task(BaseModel):
+    finger = IntegerField() #任务id
     name = CharField()  #任务名称
     dataType = CharField() #任务类型
     dir = CharField() #文件目录或者host地址
@@ -59,7 +60,7 @@ def load_user(user_id):
 # 建表
 def create_table():
     db.connect()
-    db.create_tables([User,Config])
+    db.create_tables([User, Task])
 
 
 if __name__ == '__main__':

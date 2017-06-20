@@ -10,8 +10,8 @@
     "i": "fa fa-fw fa-task",
     "child": [
       {
-        "t": "基本表格",
-        "url": "table/table1.html",
+        "t": "任务列表",
+        "url": "task/list",
         "i": "fa fa-fw fa-file"
       },
       {
