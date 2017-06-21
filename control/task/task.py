@@ -7,7 +7,6 @@
 # @Software: PyCharm
 from enum import Enum
 import time
-import common.dict_json
 
 
 class DATATYPE(Enum):

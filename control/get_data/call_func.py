@@ -15,12 +15,12 @@ def getDataFile(task):
     根据传递的task选择对应的服务，然后将获取的数据按照规则保存到本地
     :return:本地文件列表list，已经修改名字，保持原有目录结构
     '''
-    files = []
     type = task.dataType
     if type == DATATYPE.FTP.value:
         return getFTP(task)
         pass
     elif type == DATATYPE.MYSQL.value:
+        print('2')
         return getMySQL(task)
         pass
     elif type == DATATYPE.FILE.value:
@@ -29,4 +29,6 @@ def getDataFile(task):
         pass
     elif type == DATATYPE.WEBDAV.value:
         pass
+    else:
+        return []
 

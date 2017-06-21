@@ -14,13 +14,13 @@ from app.models import Task
 def getMySQL(configItem):
 
     db = MySQLClient(host=configItem.dir,username=configItem.username,password=configItem.password,database=configItem.target)
-    if configItem.tables is None or configItem.tables == '':
-        return db.getAllData(str(configItem.id))
+    if configItem.tables is None or configItem.tables == '' or configItem.tables == ' ':
+        return db.getAllData(str(configItem.finger))
     else:
-        tables = configItem.tables.split(" ")
         files = []
+        tables = configItem.tables.split(" ")
         for t in tables:
-            files.append(db.getData(t,str(configItem.id)))
+            files.append(db.getData(t,str(configItem.finger)))
         return files
 
 class MySQLClient:

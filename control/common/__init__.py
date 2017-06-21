@@ -5,7 +5,7 @@
 # @Site    : http://blog.nickzy.com
 # @File    : __init__.py.py
 # @Software: PyCharm
-from common import logger
+from control.common import logger
 
 CONFIGFILE = "conf/config.json"
 LOGS = logger.Logger("Sender")

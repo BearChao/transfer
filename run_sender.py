@@ -20,16 +20,17 @@ def run(id):
     if task is None:
         LOGS.error('找不到对应任务：'+str(id))
         exit(-1)
-    else:
-        task = task[0]
     db.close()
     LOGS.info('开始任务：' + str(id)+":"+task.name)
 
     files = getDataFile(task)
 
     #发送文件
+    if files == None:
+        LOGS.error('文件发送失败：获取不到数据')
+        return -1
     for f in files:
-        print("send:"+f)
+        LOGS.info("send:"+f)
     #sendFile("ls")
     LOGS.info('文件发送完成')
 

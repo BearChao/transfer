@@ -23,7 +23,7 @@ class Logger:
 
         # create file handler
         file = time.strftime('%Y-%m-%d', time.localtime(time.time()))
-        log_path = "log/" + file + ".log"
+        log_path = "logs/control/" + file + ".log"
         fh = logging.FileHandler(log_path)
 
         # create formatter

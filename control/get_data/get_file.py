@@ -7,7 +7,7 @@
 # @Software: PyCharm
 import os
 import shutil
-from common import LOGS, file_sender
+from control.common import LOGS, file_sender
 from distutils.dir_util import copy_tree
 
 
