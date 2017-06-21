@@ -43,7 +43,7 @@ class User(UserMixin, BaseModel):
 
 #配置文件
 class Task(BaseModel):
-    finger = IntegerField() #任务id
+    finger = IntegerField() #任务编号
     name = CharField()  #任务名称
     dataType = IntegerField() #任务类型
     dir = CharField() #文件目录或者host地址

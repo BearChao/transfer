@@ -7,24 +7,24 @@
   {
     "t": "任务管理",
     "url": "",
-    "i": "fa fa-fw fa-task",
+    "i": "fa fa-fw fa-tasks",
     "child": [
       {
-        "t": "任务列表",
+        "t": "任务配置",
         "url": "task/list",
-        "i": "fa fa-fw fa-file"
+        "i": "fa fa-fw fa-list-alt"
       },
       {
-        "t": "DataTables",
+        "t": "自动化管理",
         "url": "table/table2.html",
-        "i": "fa fa-fw fa-file"
+        "i": "fa fa-fw fa-calendar-check-o"
       }
     ]
   },
   {
     "t": "日志管理",
     "url": "",
-    "i": "fa fa-fw fa-twitter",
+    "i": "fa fa-fw fa-file-archive-o",
     "child": [
       {
         "t": "任务执行日志",
@@ -42,5 +42,10 @@
         "i":"fa fa-fw fa-file"
       }
     ]
+  },
+  {
+    "t": "用户管理",
+    "url": "user",
+    "i": "fa fa-fw fa-user"
   }
 ]
