@@ -32,4 +32,4 @@ def logout():
     state = "success"
     message = "提交成功"
 
-    return render_template('auth/logout.json',state = state,message = message,referer = referer)
+    return render_template('auth/respond.json', state = state, message = message, referer = referer)

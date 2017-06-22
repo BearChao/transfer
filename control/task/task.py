@@ -10,12 +10,12 @@ import time
 
 
 class DATATYPE(Enum):
-    FILE = 1
-    FTP = 2
-    WEBDAV = 3
+    FILE = "file"
+    FTP = "ftp"
+    WEBDAV = "webDav"
     #>10则为数据库类型
-    MYSQL = 11
-    ORACLE = 12
+    MYSQL = "mysql"
+    ORACLE = "oracle"
     #todo 枚举中添加其他类型
 
 def get_finger():

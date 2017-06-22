@@ -45,7 +45,7 @@ class User(UserMixin, BaseModel):
 class Task(BaseModel):
     finger = IntegerField() #任务编号
     name = CharField()  #任务名称
-    dataType = IntegerField() #任务类型
+    dataType = CharField() #任务类型
     dir = CharField() #文件目录或者host地址
     username = CharField() #用户名
     password = CharField() #密码

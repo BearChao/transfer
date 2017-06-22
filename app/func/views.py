@@ -1,8 +1,10 @@
-from flask import render_template
+from flask import render_template, redirect, url_for, request
 from flask_login import login_required
 
+from app.func.forms import NewTaskForm
 from app.main.views import common_list
 from app.models import Task
+from control.task.task import get_finger
 from . import func
 
 # 主页
@@ -23,6 +25,22 @@ def taskList():
 def queryTask():
     return render_template('fragment/query.html')
 
-@func.route('/fragment/new')
+@func.route('/fragment/new', methods=['POST','GET'])
 def newTask():
-    return render_template('fragment/new.html')
+    form = NewTaskForm()
+    if request.method == 'POST':
+        task = Task()
+        task.finger = get_finger()
+        task.dataType = request.form['dataType']
+        task.name = request.form['name']
+        task.dir = request.form['dir']
+        task.username = request.form['username']
+        task.password = request.form['password']
+        task.port = request.form['port']
+        task.tables = request.form['tables']
+        task.target = request.form['target']
+        #todo 检测参数是否正确
+        task.save()
+        return render_template('auth/respond.json',state="success")
+
+    return render_template('fragment/new_task.html', form = form)
