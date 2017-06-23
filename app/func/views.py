@@ -19,12 +19,18 @@ def home():
 def taskList():
     return common_list(Task,'func/tasklist.html')
 
+#删除任务
+@func.route('/task/delete/<finger>')
+def deleteTask(finger):
+    try:
+        task = Task.get(Task.finger == finger)
+        task.delete_instance()
+        return render_template('auth/respond.json',state='success')
+    except:
+        return render_template('auth/respond.json',state='fail',message='操作失败')
 
-#弹出框组件
-@func.route('/fragment/query')
-def queryTask():
-    return render_template('fragment/query.html')
 
+#新建任务/编辑任务
 @func.route('/fragment/new', methods=['POST','GET'])
 def newTask():
     form = NewTaskForm()
@@ -42,5 +48,4 @@ def newTask():
         #todo 检测参数是否正确
         task.save()
         return render_template('auth/respond.json',state="success")
-
     return render_template('fragment/new_task.html', form = form)
