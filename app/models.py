@@ -52,6 +52,7 @@ class Task(BaseModel):
     target = CharField() #目标文件夹或者数据库名
     port = CharField() #端口号
     tables = CharField() #数据表，空格间隔
+    count = IntegerField() #执行次数
 
 @login_manager.user_loader
 def load_user(user_id):

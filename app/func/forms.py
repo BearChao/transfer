@@ -20,3 +20,4 @@ class NewTaskForm(FlaskForm):
     target = StringField('目标文件夹\数据库')
     tables = StringField('数据表')
     finger = StringField('finger')
+    count = IntegerField('运行次数')

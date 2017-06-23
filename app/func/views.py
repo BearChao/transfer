@@ -41,6 +41,7 @@ def newTask():
         else:
             task = Task()
             task.finger = get_finger()
+            task.count = 0
         task.dataType = request.form['dataType']
         task.name = request.form['name']
         task.dir = request.form['dir']
@@ -68,4 +69,5 @@ def editTask(finger):
     form.port.data = task.port
     form.tables.data = task.tables
     form.target.data = task.target
+    form.count.data = task.count
     return render_template('fragment/new_task.html', form=form)
