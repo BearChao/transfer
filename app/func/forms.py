@@ -19,3 +19,4 @@ class NewTaskForm(FlaskForm):
     password = StringField('密码', validators=[DataRequired()])
     target = StringField('目标文件夹\数据库')
     tables = StringField('数据表')
+    finger = StringField('finger')
