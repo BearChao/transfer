@@ -1,0 +1,35 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h4 class="modal-title" id="myModalLabel">创建job</h4>
+</div>
+<form class="form-horizontal J_ajaxForm" role="form" method="post" action="{{ url_for('func.addJob') }}" >
+    <div class="modal-body">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">任务序号</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" placeholder="任务代码" name="finger" value="{{ finger }}" readonly>
+                <!--<p class="help-block">必填</p>-->
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">执行间隔</label>
+            <div class="col-sm-9">
+                <input type="number" min="1" step="1" class="form-control" placeholder="请输入分钟数" name="minute">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="enable" value=1 checked>激活
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-primary J_ajaxSubmitBtn">提交</button>
+    </div>
+</form>

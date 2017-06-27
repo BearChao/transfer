@@ -20,7 +20,7 @@ function loadURL(url) {
         data: '',
         dataType: 'html',
         beforeSend: function () {
-            content.html('<h1 class="ajax-loading-animation"><i class="fa fa-refresh fa-spin"></i> Loading...</h1>');
+            content.html('<h1 class="ajax-loading-animation"><i class="fa fa-spinner fa-pulse"></i> Loading...</h1>');
             var title = '';
             var $breadcrumb = $('#ribbon .breadcrumb');
             title = $('nav a[href="' + '#' + url + '"]').find('span').text();

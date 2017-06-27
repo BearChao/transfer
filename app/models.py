@@ -54,6 +54,15 @@ class Task(BaseModel):
     tables = CharField() #数据表，空格间隔
     count = IntegerField() #执行次数
 
+# class Job(BaseModel):
+#     finger = IntegerField() #任务编号
+#     is_enable = BooleanField() #允许运行
+#     type = IntegerField() #任务类型  1：每*分钟执行  2：固定日期执行
+#     minute = IntegerField() #间隔分钟数
+#     last_run = IntegerField() #上次运行时间
+
+
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.get(User.id == int(user_id))

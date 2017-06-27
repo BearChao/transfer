@@ -8,7 +8,7 @@ import os
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'
 login_manager.login_view = 'auth.login'
-#fileConfig('conf/log-app.conf')
+fileConfig('conf/log-app.conf')
 
 def get_logger(name):
     return logging.getLogger(name)
@@ -37,5 +37,7 @@ def create_app(config_name):
 
     from .func import  func as func_blueprint
     app.register_blueprint(func_blueprint)
+
+    #run_jobs()
 
     return app

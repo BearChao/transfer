@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Time    : 2017/6/21 下午11:53
+# @Time    : 2017/6/28 上午1:02
 # @Author  : Bear Chao
 # @Site    : http://blog.nickzy.com
-# @File    : tasks.py
+# @File    : edit_job.py
 # @Software: PyCharm
-

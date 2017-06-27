@@ -10,7 +10,7 @@ logger = get_logger(__name__)
 cfg = get_config()
 
 # 通用列表查询
-def common_list(DynamicModel, view):
+def common_list(DynamicModel, view, arg=None):
     # 接收参数
     action = request.args.get('action')
     id = request.args.get('id')
@@ -34,7 +34,8 @@ def common_list(DynamicModel, view):
 
     dict = {'content': utils.query_to_list(query), 'total_count': total_count,
             'total_page': math.ceil(total_count / length), 'page': page, 'length': length}
-    return render_template(view, form=dict, current_user=current_user)
+
+    return render_template(view, form=dict, current_user=current_user,arg = arg)
 
 
 # 通用单模型查询&新增&修改
