@@ -34,8 +34,8 @@
                                                 <td>{{ row.is_enabled() }}</td>
                                                 <td>{{ row.is_valid() }}</td>
                                                 <td>
-                                                    <button class="btn btn-default btn-xs J_ajax_content_modal" data-href="{{ url_for('func.newJob',finger = row.finger) }}">修改</button>
-                                                    <button class="btn btn-info btn-xs J_ajax_content_modal" data-href="{{ url_for('func.newJob',finger = row.finger) }}">启用</button>
+                                                    <button class="btn btn-default btn-xs J_ajax_content_modal" data-href="{{ url_for('func.edit_job_page',finger = row.comment, index = loop.index) }}">修改</button>
+                                                    <button class="btn btn-info btn-xs J_ajax_content_modal" data-href="{{ url_for('func.newJob',finger = row.comment) }}">启用</button>
                                                     <button type="button" class="btn btn-warning btn-xs J_confirm_modal " data-tip="将要删除该任务的全部job，是否操作？" data-target="{{ url_for('func.deleteTask',finger = row.finger) }}">删除</button>
                                                 </td>
                                             </tr>

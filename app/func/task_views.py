@@ -8,6 +8,7 @@ from app.models import Task
 from control.task.task import get_finger
 from . import func
 
+
 # 主页
 @func.route('/home', methods=['GET'])
 @login_required
