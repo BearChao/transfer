@@ -2,7 +2,7 @@
     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
     <h4 class="modal-title" id="myModalLabel">编辑job</h4>
 </div>
-<form class="form-horizontal J_ajaxForm" role="form" method="post" action="{{ url_for('func.addJob') }}" >
+<form class="form-horizontal J_ajaxForm" role="form" method="post" action="{{ url_for('func.update_job') }}" >
     <div class="modal-body">
         <div class="form-group">
             <label class="col-sm-3 control-label">任务序号</label>
@@ -17,7 +17,7 @@
                 <input type="number" min="1" step="1" class="form-control" placeholder="请输入分钟数" name="minute" value="{{ minute }}">
             </div>
         </div>
-
+        <input type="hidden" name="index" value="{{ index }}">
         <div class="form-group">
             <div class="col-sm-offset-3 col-sm-9">
                 <div class="checkbox">

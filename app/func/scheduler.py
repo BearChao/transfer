@@ -17,6 +17,34 @@ def create_job(finger_str,minute,enable = True):
     cron.write()
     return True
 
+def update_job_crontab(finger_str,minute,enable,index):
+    cron = CronTab(user=True)
+    iter = cron.find_comment(finger_str)
+    list = []
+    for i in iter:
+        list.append(i)
+    try:
+        list[index].minute.every(minute)
+        list[index].enable(enable)
+        cron.write()
+        return True
+    except:
+        return False
+
+def delete_job_crontab(finger,index):
+    cron = CronTab(user=True)
+    iter = cron.find_comment(finger)
+    list = []
+    for i in iter:
+        list.append(i)
+    try:
+        list[index].delete()
+        cron.write()
+        return True
+    except:
+        return False
+
+
 def get_jobs(finger):
     cron = CronTab(user=True)
     iter = cron.find_comment(finger)

@@ -31,23 +31,25 @@ def task_jobs():
 @func.route('/job/new/<finger>', methods=['POST','GET'])
 def newJob(finger):
     return render_template('fragment/new_job.html', finger = finger)
+
 #新建job操作
 @func.route('/job/new',methods=['POST'])
 def addJob():
     finger = request.form['finger']
     minute = int(request.form['minute'])
+    enable = True
     if not request.form['enable']:
         enable = False
-    if create_job(finger,minute):
-        return render_template('auth/respond.json',state='success')
+    if create_job(finger,minute,enable=enable):
+        return render_template('auth/respond.json', state='success')
     else:
-        return render_template('auth/respond.json',state='fail',message='操作失败')
+        return render_template('auth/respond.json', state='fail', message='操作失败')
+
 #job详情
 @func.route('/job/<finger>')
 def jobDetail(finger):
     jobs = get_jobs(finger)
     return render_template('func/job_detail.html', jobs = jobs)
-
 
 
 #删除任务
