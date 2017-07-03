@@ -5,6 +5,7 @@
 # @Site    : http://blog.nickzy.com
 # @File    : run_sender.py
 # @Software: PyCharm
+import os
 import sys
 
 from app.models import Task, db
@@ -31,7 +32,8 @@ def run(id):
         return -1
     for f in files:
         LOGS.info("send:"+f)
-    #sendFile("ls")
+        sendFile(f)
+        os.remove(f)
     LOGS.info('文件发送完成')
 
 if __name__ == '__main__':

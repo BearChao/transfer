@@ -12,6 +12,9 @@ class Config:
     ITEMS_PER_PAGE = 10
     JWT_AUTH_URL_RULE = '/api/auth'
 
+    #设置接收端
+    CLIENT_TYPE = 'receiver'
+
     @staticmethod
     def init_app(app):
         pass

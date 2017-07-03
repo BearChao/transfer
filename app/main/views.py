@@ -1,6 +1,6 @@
 from app import get_logger, get_config
 import math
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, current_app
 from flask_login import login_required, current_user
 from app import utils
 from app.main.forms import CfgNotifyForm
@@ -74,4 +74,6 @@ def index():
 
 @main.route('/json/nav')
 def nav():
+    if current_app.config.get('CLIENT_TYPE') == 'receiver':
+        return render_template('nav.recv.json')
     return render_template('nav.json')

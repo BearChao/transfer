@@ -89,11 +89,11 @@ def get_all_jobs():
 
 
 #
-# if __name__ == '__main__':
-#     get_jobs()
-
-    # print(job.command)
-    # print(job.comment)
-    # print(job.last_run)
-    # print(job.is_enabled())
-    # print(job.is_valid())
+if __name__ == '__main__':
+    jobs = get_all_jobs()
+    for job in jobs:
+        print(job.command)
+        print(job.comment)
+        print(job.last_run)
+        print(job.is_enabled())
+        print(job.is_valid())

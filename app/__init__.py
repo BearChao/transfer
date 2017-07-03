@@ -38,6 +38,4 @@ def create_app(config_name):
     from .func import  func as func_blueprint
     app.register_blueprint(func_blueprint)
 
-    #run_jobs()
-
     return app
