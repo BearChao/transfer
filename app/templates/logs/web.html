@@ -1,0 +1,33 @@
+<div class="content_wrapper">
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <aside>
+                    <header><i class="fa fa-fw fa-file"></i>日志</header>
+                    <section>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="my_panel">
+                                            <ul class="list-group">
+                                                {% for i in log %}
+                                               <li class="list-group-item">{{ i }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                     <ul class="pagination">
+                                         <li><button class="btn btn-default" onclick="loadURL('{{ url_for('main.log_web',page = page|int - 1) }}')">上一页</button></li>
+                                        <li><label class="btn btn-default">{{ page }}</label></li>
+                                         <li><button class="btn btn-default" onclick="loadURL('{{ url_for('main.log_web',page = page|int + 1) }}')">下一页</button></li>
+                                     </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </aside>
+            </div>
+        </div>
+    </div>
+
+</div>

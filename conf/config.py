@@ -13,7 +13,7 @@ class Config:
     JWT_AUTH_URL_RULE = '/api/auth'
 
     #设置接收端
-    CLIENT_TYPE = 'receiver'
+    #CLIENT_TYPE = 'receiver'
 
     @staticmethod
     def init_app(app):

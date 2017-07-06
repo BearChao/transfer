@@ -27,6 +27,11 @@
     "i": "fa fa-fw fa-file-archive-o",
     "child": [
       {
+        "t": "web服务日志",
+        "url": "log/web/1",
+        "i": "fa fa-fw fa-file"
+      },
+      {
         "t": "任务执行日志",
         "url": "log/task",
         "i": "fa fa-fw fa-file"
@@ -42,6 +47,11 @@
         "i":"fa fa-fw fa-file"
       }
     ]
+  },
+  {
+    "t": "网卡IP配置",
+    "url": "netcard",
+    "i": "fa fa-fw fa-cog"
   },
   {
     "t": "用户管理",

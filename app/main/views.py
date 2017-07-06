@@ -1,3 +1,7 @@
+from os import listdir
+
+from os.path import isfile, join
+
 from app import get_logger, get_config
 import math
 from flask import render_template, redirect, url_for, flash, request, current_app
@@ -71,6 +75,46 @@ def common_edit(DynamicModel, form, view):
 @login_required
 def index():
     return render_template('index.html', current_user=current_user)
+
+@main.route('/log/web/<page>')
+def log_web(page):
+    page = int(page)
+    count = 100
+    with open('logs/web.log') as file:
+        log = []
+        i = j = 1
+        for line in file:
+            if i >= (page-1)*count:
+                log.append(line)
+                j+=1
+            i+=1
+            if j >= count:
+                break
+    return render_template('logs/web.html',log = log, page = page)
+
+
+@main.route('/log/task')
+def log_task_list():
+    mypath = 'logs/control'
+    files = [f[:-4] for f in listdir(mypath) if isfile(join(mypath, f))]
+    return render_template('logs/crontrol_list.html',files = files)
+
+@main.route('/log/task/<file>/<page>')
+def log_task(file,page):
+    page = int(page)
+    count = 100
+    mypath = 'logs/control'
+    with open(join(mypath,file+'.log')) as f:
+        log = []
+        i = j = 1
+        for line in f:
+            if i >= (page - 1) * count:
+                log.append(line)
+                j += 1
+            i += 1
+            if j >= count:
+                break
+    return render_template('logs/control.html', log=log, page=page, file = file)
 
 @main.route('/json/nav')
 def nav():
