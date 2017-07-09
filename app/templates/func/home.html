@@ -17,7 +17,7 @@
                                     {% endfor %}
                                     <div class="my_panel">
                                         <div class="heading">欢迎信息</div>
-                                        <div class="body">您好：admin！您上一次登录时间：2017-7-2 13:07，登录IP：127.0.0.1</div>
+                                        <div class="body">您好：{{ current_user.fullname }}！</div>
                                     </div>
                                     <div class="my_panel">
                                         <div class="heading">系统信息</div>
@@ -26,27 +26,27 @@
                                                 <tbody>
                                                 <tr>
                                                     <td width="200">软件版本</td>
-                                                    <td>v1</td>
+                                                    <td>v1.00.00</td>
                                                 </tr>
                                                 <tr>
                                                     <td>操作系统</td>
-                                                    <td>Linux CentOS</td>
+                                                    <td>{{ info.platform }}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>PHP版本</td>
-                                                    <td>5.4.16</td>
+                                                    <td>系统架构</td>
+                                                    <td>{{ info.machine }}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>服务器端信息</td>
-                                                    <td>Linux</td>
+                                                    <td>内存占用</td>
+                                                    <td>{{ info.memory }}%</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>最大上传限制</td>
-                                                    <td>2M</td>
+                                                    <td>磁盘占用</td>
+                                                    <td>{{ info.disk }}%</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>最大执行时间</td>
-                                                    <td>30 seconds</td>
+                                                    <td>系统启动时间</td>
+                                                    <td>{{ info.boot_time }}</td>
                                                 </tr>
                                                 </tbody>
                                             </table>

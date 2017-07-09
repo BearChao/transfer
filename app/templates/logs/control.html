@@ -10,6 +10,7 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="my_panel">
+                                    {% if log %}
                                             <ul class="list-group">
                                                 {% for i in log %}
                                                <li class="list-group-item">{{ i }}</li>
@@ -20,6 +21,7 @@
                                         <li><label class="btn btn-default">{{ page }}</label></li>
                                          <li><button class="btn btn-default" onclick="loadURL('{{ url_for('main.log_task',page = page|int + 1,file = file) }}')">下一页</button></li>
                                      </ul>
+                                    {% endif %}
                                     </div>
                                 </div>
                             </div>

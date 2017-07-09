@@ -1,6 +1,9 @@
-from flask import render_template, redirect, url_for, request
-from flask_login import login_required
+import platform
 
+from flask import render_template, redirect, url_for, request
+from flask_login import login_required, current_user
+
+from app.func import util
 from app.func.forms import NewTaskForm
 from app.func.scheduler import get_all_jobs, create_job, get_jobs
 from app.main.views import common_list
@@ -13,7 +16,13 @@ from . import func
 @func.route('/home', methods=['GET'])
 @login_required
 def home():
-    return render_template('func/home.html')
+    info = {'platform' : platform.platform(), #系统名称和信息
+            'machine' : platform.machine(), #系统位数
+            'memory' : util.get_memory(), #内存占用百分比
+            'disk' : util.get_disk(), #存储占用百分比
+            'boot_time': util.get_bootTime() #启动时间
+            }
+    return render_template('func/home.html',current_user=current_user,info = info)
 
 #任务列表
 @func.route('/task/list', methods=['GET'])
