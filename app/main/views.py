@@ -2,12 +2,15 @@ from os import listdir
 
 from os.path import isfile, join
 
+from werkzeug.security import generate_password_hash
+
 from app import get_logger, get_config
 import math
 from flask import render_template, redirect, url_for, flash, request, current_app
 from flask_login import login_required, current_user
 from app import utils
-from app.main.forms import CfgNotifyForm
+from app.main.forms import CfgNotifyForm, UserForm
+from app.models import User
 from . import main
 
 logger = get_logger(__name__)
@@ -25,9 +28,11 @@ def common_list(DynamicModel, view, arg=None):
     if action == 'del' and id:
         try:
             DynamicModel.get(DynamicModel.id == id).delete_instance()
-            flash('删除成功')
+            # flash('删除成功')
+            return render_template('auth/respond.json',state='success')
         except:
-            flash('删除失败')
+            # flash('删除失败')
+            return render_template('auth/respond.json', state='fail', message = '操作失败')
 
     # 查询列表
     query = DynamicModel.select()
@@ -52,22 +57,28 @@ def common_edit(DynamicModel, form, view):
             utils.model_to_form(model, form)
         # 修改
         if request.method == 'POST':
-            if form.validate_on_submit():
+            # if form.validate_on_submit():
                 utils.form_to_model(form, model)
+                model.password = generate_password_hash(model.password)
                 model.save()
-                flash('修改成功')
-            else:
-                utils.flash_errors(form)
+                # flash('修改成功')
+                return render_template('auth/respond.json',state='success')
+            # else:
+                 #utils.flash_errors(form)
+
     else:
         # 新增
-        if form.validate_on_submit():
+        # if form.validate_on_submit():
+        if request.method == 'POST':
             model = DynamicModel()
             utils.form_to_model(form, model)
+            model.password = generate_password_hash(model.password)
             model.save()
-            flash('保存成功')
-        else:
-            utils.flash_errors(form)
-    return render_template(view, form=form, current_user=current_user)
+            return render_template('auth/respond.json',state='success')
+            # flash('保存成功')
+        # else:
+        #     utils.flash_errors(form)
+    return render_template(view, form=form, current_user=current_user,id= id)
 
 
 # 首页跳转
@@ -116,8 +127,26 @@ def log_task(file,page):
                 break
     return render_template('logs/control.html', log=log, page=page, file = file)
 
+@main.route('/log/delete')
+def log_delete():
+    return render_template('logs/clear.html')
+
 @main.route('/json/nav')
 def nav():
     if current_app.config.get('CLIENT_TYPE') == 'receiver':
         return render_template('nav.recv.json')
     return render_template('nav.json')
+
+@main.route('/user')
+def user_list():
+    return common_list(User,'user/user_list.html')
+
+@main.route('/user/edit',methods=['POST','GET'])
+def edit_user():
+    userForm = UserForm()
+    return common_edit(User,userForm,'user/user_edit.html')
+
+@main.route('/user/new')
+def new_user():
+    userForm = UserForm()
+    return common_edit(User,userForm,'user/user_new.html')

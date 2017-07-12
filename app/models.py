@@ -36,6 +36,7 @@ class User(UserMixin, BaseModel):
     fullname = CharField()  # 真实性名
     email = CharField()  # 邮箱
     phone = CharField()  # 电话
+    role = IntegerField() #权限 1：管理员  2：仅日志
     status = BooleanField(default=True)  # 生效失效标识
 
     def verify_password(self, raw_password):
