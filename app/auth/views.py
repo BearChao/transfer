@@ -5,7 +5,6 @@ from .forms import LoginForm
 from app.models import User
 from flask_login import login_user, logout_user, login_required
 
-
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -22,14 +21,12 @@ def login():
             flash('用户名不存在')
     return render_template('auth/login.html', form=form)
 
-
 @auth.route('/logout')
 @login_required
 def logout():
     logout_user()
     referer = 'http://'+ request.host + url_for('auth.login')
-    flash('您已退出登录')
+    #flash('您已退出登录')
     state = "success"
     message = "提交成功"
-
     return render_template('auth/respond.json', state = state, message = message, referer = referer)

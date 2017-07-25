@@ -5,11 +5,6 @@
     "i": "fa fa-fw fa-home"
   },
   {
-    "t": "任务配置",
-    "url": "",
-    "i": "fa fa-fw fa-tasks"
-  },
-  {
     "t": "日志管理",
     "url": "",
     "i": "fa fa-fw fa-file-archive-o",
@@ -28,22 +23,7 @@
         "t": "文件传输日志",
         "url":"log/file",
         "i": "fa fa-fw fa-file"
-      },
-      {
-        "t": "清理日志",
-        "url": "log/delete",
-        "i":"fa fa-fw fa-file"
       }
     ]
-  },
-  {
-    "t": "网卡IP配置",
-    "url": "netcard",
-    "i": "fa fa-fw fa-cog"
-  },
-  {
-    "t": "用户管理",
-    "url": "user",
-    "i": "fa fa-fw fa-user"
   }
 ]

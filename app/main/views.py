@@ -153,6 +153,8 @@ def log_delete():
 
 @main.route('/json/nav')
 def nav():
+    if current_user.role == 2:
+        return render_template('nav.log.json')
     if current_app.config.get('CLIENT_TYPE') == 'receiver':
         return render_template('nav.recv.json')
     return render_template('nav.json')
