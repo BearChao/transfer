@@ -127,6 +127,30 @@ def log_task(file,page):
                 break
     return render_template('logs/control.html', log=log, page=page, file = file)
 
+@main.route('/log/file')
+def log_transfer_list():
+    mypath = 'logs/transfer'
+    files = [f[:-4] for f in listdir(mypath) if isfile(join(mypath, f))]
+    return render_template('logs/crontrol_list.html',files = files)
+
+@main.route('/log/file/<file>/<page>')
+def log_transfer(file,page):
+    page = int(page)
+    count = 100
+    mypath = 'logs/transfer'
+    with open(join(mypath,file+'.log')) as f:
+        log = []
+        i = j = 1
+        for line in f:
+            if i >= (page - 1) * count:
+                log.append(line)
+                j += 1
+            i += 1
+            if j >= count:
+                break
+    return render_template('logs/control.html', log=log, page=page, file = file)
+
+
 @main.route('/log/delete')
 def log_delete():
     if request.args.get('type'):
