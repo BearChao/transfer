@@ -129,7 +129,27 @@ def log_task(file,page):
 
 @main.route('/log/delete')
 def log_delete():
-    return render_template('logs/clear.html')
+    if request.args.get('type'):
+        state = 'success'
+        message = ''
+        type = request.args.get('type')
+        if type == '1':  #web日志
+            if not utils.del_web_log():
+                state = 'fail'
+                message = '操作失败！'
+        elif type == '2': #任务日志
+            num = request.args.get('num')
+            if not utils.del_control_log(int(num)):
+                state = 'fail'
+                message = '操作失败！'
+        elif type == '3': #文件传输日志
+            num = request.args.get('num')
+            if not utils.del_transfer_log(int(num)):
+                state = 'fail'
+                message = '操作失败'
+        return render_template('auth/respond.json',state = state, message = message)
+    else:
+        return render_template('logs/clear.html')
 
 @main.route('/json/nav')
 def nav():

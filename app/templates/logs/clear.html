@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <aside>
-                    <header><i class="fa fa-fw fa-file"></i>选择日期</header>
+                    <header><i class="fa fa-fw fa-remove"></i>清除日志</header>
                     <section>
                         <div class="container-fluid">
                             <div class="row">
@@ -12,26 +12,28 @@
                                     <div class="my_panel">
                                         <div class="row">
                                             <label class="col-lg-2">清空Web日志</label>
-                                            <button class="btn btn-danger btn-sm">清除</button>
+                                            <button class="btn btn-danger btn-sm J_confirm_modal" data-target="{{ url_for('main.log_delete',type = 1) }}" data-tip="将要清空web访问日志，确定吗？">清除</button>
                                         </div>
                                         <div class="row" style="margin-top: 20px">
                                             <div class="col-md-2">
                                                 <label>清除任务日志</label>
                                             </div>
                                            <div class="btn-group " role="group" aria-label="...">
-                                              <button type="button" class="btn btn-info">最早1天</button>
-                                              <button type="button" class="btn btn-warning">最早5天</button>
-                                              <button type="button" class="btn btn-danger">全部</button>
+                                               <button type="button" class="btn btn-sm btn-default J_confirm_modal" data-target="{{ url_for('main.log_delete',type = 2, num = 1) }}" data-tip="将要删除最早1天的日志，确定吗？">最早1天</button>
+                                               <button type="button" class="btn btn-sm btn-default J_confirm_modal" data-target="{{ url_for('main.log_delete',type = 2, num = 5) }}" data-tip="将要删除最早5天的日志，确定吗？">最早5天</button>
+                                               <button type="button" class="btn btn-sm btn-default J_confirm_modal" data-target="{{ url_for('main.log_delete',type = 2, num = 30) }}" data-tip="将要删除最早30天的日志，确定吗？">最早30天</button>
+                                               <button type="button" class="btn btn-sm btn-danger J_confirm_modal"  data-target="{{ url_for('main.log_delete',type = 2, num = 1000) }}" data-tip="将要删除全部日志，确定吗？">全部</button>
                                             </div>
                                         </div>
                                         <div class="row" style="margin-top: 20px">
                                             <div class="col-md-2">
                                                 <label>清除传输日志</label>
                                             </div>
-                                           <div class="btn-group " role="group" aria-label="...">
-                                              <button type="button" class="btn btn-info">最早1天</button>
-                                              <button type="button" class="btn btn-warning">最早5天</button>
-                                              <button type="button" class="btn btn-danger">全部</button>
+                                           <div class="btn-group " role="group" aria-label=".`..">
+                                               <button type="button" class="btn btn-sm btn-default J_confirm_modal" data-target="{{ url_for('main.log_delete',type = 3, num = 1) }}" data-tip="将要删除最早1天的日志，确定吗？">最早1天</button>
+                                               <button type="button" class="btn btn-sm btn-default J_confirm_modal" data-target="{{ url_for('main.log_delete',type = 3, num = 5) }}" data-tip="将要删除最早5天的日志，确定吗？">最早5天</button>
+                                               <button type="button" class="btn btn-sm btn-default J_confirm_modal" data-target="{{ url_for('main.log_delete',type = 3, num = 30) }}" data-tip="将要删除最早30天的日志，确定吗？">最早30天</button>
+                                               <button type="button" class="btn btn-sm btn-danger J_confirm_modal"  data-target="{{ url_for('main.log_delete',type = 3, num = 1000) }}" data-tip="将要删除全部日志，确定吗？">全部</button>
                                             </div>
                                         </div>
 

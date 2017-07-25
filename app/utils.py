@@ -3,11 +3,15 @@
 import html
 import json
 import datetime
+from os import listdir
+import os
 from urllib.parse import unquote
 from flask import Response, flash
 
 
 ## 字符串转字典
+from os.path import isfile, join
+
 from app.models import Task
 
 
@@ -101,7 +105,6 @@ def form_to_model(form, model):
         model.__setattr__(wtf.name, wtf.data)
     return model
 
-
 # peewee模型转表单
 def model_to_form(model, form):
     dict = obj_to_dict(model)
@@ -120,3 +123,37 @@ def flash_errors(form):
                 error
             ))
 
+#删除web日志
+def del_web_log():
+    try:
+        with open('logs/web.log','w') as f:
+            f.truncate()
+            return True
+    except:
+        return False
+
+#删除任务日志
+def del_control_log(num):
+    mypath = 'logs/control'
+    try:
+        files = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+        for i in range(num):
+            if num < i+1:
+                break
+            os.remove(join(mypath,files[i]))
+        return True
+    except:
+        return False
+
+#删除传输日志
+def del_transfer_log(num):
+    mypath = 'logs/transfer'
+    try:
+        files = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+        for i in range(num):
+            if num < i+1:
+                break
+            os.remove(join(mypath, files[i]))
+        return True
+    except:
+        return False
