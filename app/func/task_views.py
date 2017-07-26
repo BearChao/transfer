@@ -1,6 +1,6 @@
 import platform
 
-from flask import render_template, redirect, url_for, request
+from flask import render_template, redirect, url_for, request, current_app
 from flask_login import login_required, current_user
 
 from app.func import util
@@ -16,11 +16,15 @@ from . import func
 @func.route('/home', methods=['GET'])
 @login_required
 def home():
+    stat = '外网端'
+    if current_app.config.get('CLIENT_TYPE') == 'receiver':
+        stat = '内网端'
     info = {'platform' : platform.platform(), #系统名称和信息
             'machine' : platform.machine(), #系统位数
             'memory' : util.get_memory(), #内存占用百分比
             'disk' : util.get_disk(), #存储占用百分比
-            'boot_time': util.get_bootTime() #启动时间
+            'boot_time': util.get_bootTime(), #启动时间
+            'stat': stat #系统类别
             }
     return render_template('func/home.html',current_user=current_user,info = info)
 

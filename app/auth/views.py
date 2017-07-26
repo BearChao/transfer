@@ -1,5 +1,5 @@
 
-from flask import render_template, redirect, request, url_for, flash, jsonify
+from flask import render_template, redirect, request, url_for, flash, jsonify, current_app
 from . import auth
 from .forms import LoginForm
 from app.models import User
@@ -19,7 +19,10 @@ def login():
                 flash('用户名或密码错误')
         except:
             flash('用户名不存在')
-    return render_template('auth/login.html', form=form)
+    stat = '外网端'
+    if current_app.config.get('CLIENT_TYPE') == 'receiver':
+        stat = '内网端'
+    return render_template('auth/login.html', form=form, stat = stat)
 
 @auth.route('/logout')
 @login_required
