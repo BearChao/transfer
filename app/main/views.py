@@ -88,6 +88,7 @@ def index():
     return render_template('index.html', current_user=current_user)
 
 @main.route('/log/web/<page>')
+@login_required
 def log_web(page):
     page = int(page)
     count = 100
@@ -105,12 +106,14 @@ def log_web(page):
 
 
 @main.route('/log/task')
+@login_required
 def log_task_list():
     mypath = 'logs/control'
     files = [f[:-4] for f in listdir(mypath) if isfile(join(mypath, f))]
     return render_template('logs/crontrol_list.html',files = files)
 
 @main.route('/log/task/<file>/<page>')
+@login_required
 def log_task(file,page):
     page = int(page)
     count = 100
@@ -128,12 +131,14 @@ def log_task(file,page):
     return render_template('logs/control.html', log=log, page=page, file = file)
 
 @main.route('/log/file')
+@login_required
 def log_transfer_list():
     mypath = 'logs/transfer'
     files = [f[:-4] for f in listdir(mypath) if isfile(join(mypath, f))]
     return render_template('logs/crontrol_list.html',files = files)
 
 @main.route('/log/file/<file>/<page>')
+@login_required
 def log_transfer(file,page):
     page = int(page)
     count = 100

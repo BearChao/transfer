@@ -56,6 +56,7 @@ def addJob():
 
 #job详情
 @func.route('/job/<finger>')
+@login_required
 def jobDetail(finger):
     jobs = get_jobs(finger)
     return render_template('func/job_detail.html', jobs = jobs)
@@ -63,6 +64,7 @@ def jobDetail(finger):
 
 #删除任务
 @func.route('/task/delete/<finger>')
+@login_required
 def deleteTask(finger):
     try:
         task = Task.get(Task.finger == finger)
@@ -74,6 +76,7 @@ def deleteTask(finger):
 
 #新建任务
 @func.route('/task/new', methods=['POST','GET'])
+@login_required
 def newTask():
     form = NewTaskForm()
     if request.method == 'POST':
@@ -99,6 +102,7 @@ def newTask():
 
 #编辑任务
 @func.route('/task/edit/<finger>')
+@login_required
 def editTask(finger):
     task = Task.get(Task.finger==finger)
     form = NewTaskForm()

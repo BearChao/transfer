@@ -21,6 +21,9 @@ def run(id):
     if task is None:
         LOGS.error('找不到对应任务：'+str(id))
         exit(-1)
+    #增加运行次数
+    task.count = task.count + 1
+    task.save()
     db.close()
     LOGS.info('开始任务：' + str(id)+":"+task.name)
 
@@ -34,6 +37,8 @@ def run(id):
         LOGS.info("send:"+f)
         sendFile(f)
         os.remove(f)
+
+    #记录日志
     LOGS.info('文件发送完成')
 
 if __name__ == '__main__':
