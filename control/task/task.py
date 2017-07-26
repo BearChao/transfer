@@ -13,6 +13,7 @@ class DATATYPE(Enum):
     FILE = "file"
     FTP = "ftp"
     WEBDAV = "webDav"
+    SMB = "SMB"
     #>10则为数据库类型
     MYSQL = "mysql"
     ORACLE = "oracle"

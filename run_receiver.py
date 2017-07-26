@@ -5,6 +5,7 @@
 # @Site    : http://blog.nickzy.com
 # @File    : run_receiver.py
 # @Software: PyCharm
+import os
 import sys
 
 from app.models import db, Task
@@ -21,6 +22,9 @@ def run(path):
     if task is None:
         LOGS.error('找不到对应任务：'+str(id))
         exit(-1)
+    # 增加运行次数
+    task.count = task.count + 1
+    task.save()
     db.close()
     LOGS.info('开始任务：' + str(id)+":"+task.name)
 
@@ -28,6 +32,9 @@ def run(path):
     putData(task)
 
     LOGS.info('数据传递完成')
+
+    #删除文件
+    os.remove(path)
 
 if __name__ == '__main__':
 

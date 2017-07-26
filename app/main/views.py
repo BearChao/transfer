@@ -1,4 +1,5 @@
 from os import listdir
+import os
 
 from os.path import isfile, join
 
@@ -157,6 +158,7 @@ def log_transfer(file,page):
 
 
 @main.route('/log/delete')
+@login_required
 def log_delete():
     if request.args.get('type'):
         state = 'success'
@@ -189,15 +191,28 @@ def nav():
     return render_template('nav.json')
 
 @main.route('/user')
+@login_required
 def user_list():
     return common_list(User,'user/user_list.html')
 
 @main.route('/user/edit',methods=['POST','GET'])
+@login_required
 def edit_user():
     userForm = UserForm()
     return common_edit(User,userForm,'user/user_edit.html')
 
 @main.route('/user/new')
+@login_required
 def new_user():
     userForm = UserForm()
     return common_edit(User,userForm,'user/user_new.html')
+
+@main.route('/clear')
+@login_required
+def clear():
+    try:
+        __import__('shutil').rmtree('temp')
+        os.mkdir('temp')
+    except:
+        return render_template('auth/respond.json',state = 'fail',message = "操作失败，请稍后再试...")
+    return render_template('auth/respond.json',state = 'success')

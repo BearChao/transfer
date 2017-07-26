@@ -20,7 +20,6 @@ def getDataFile(task):
         return getFTP(task)
         pass
     elif type == DATATYPE.MYSQL.value:
-        print('2')
         return getMySQL(task)
         pass
     elif type == DATATYPE.FILE.value:
@@ -28,6 +27,8 @@ def getDataFile(task):
     elif type == DATATYPE.ORACLE.value:
         pass
     elif type == DATATYPE.WEBDAV.value:
+        pass
+    elif type == DATATYPE.SMB.value:
         pass
     else:
         return []

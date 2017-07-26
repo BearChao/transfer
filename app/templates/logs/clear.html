@@ -36,7 +36,11 @@
                                                <button type="button" class="btn btn-sm btn-danger J_confirm_modal"  data-target="{{ url_for('main.log_delete',type = 3, num = 1000) }}" data-tip="将要删除全部日志，确定吗？">全部</button>
                                             </div>
                                         </div>
-
+                                        <hr/>
+                                        <div class="row">
+                                            <label class="col-lg-2">清空临时目录</label>
+                                            <button class="btn btn-danger btn-sm J_confirm_modal" data-target="{{ url_for('main.clear') }}" data-tip="将要清空临时目录，确定吗？">清空</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
