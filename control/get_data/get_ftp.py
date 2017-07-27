@@ -14,7 +14,8 @@ import socket
 def getFTP(task):
     conn = FTPSync(task.target, task.port, str(task.finger))
     conn.login(task.username, task.password)
-    conn.get_dir(task.dir, 'temp')
+    list = conn.get_dir(task.dir, 'temp')
+    return list
 
 class FTPSync(object):
   conn = ftplib.FTP()
@@ -128,7 +129,7 @@ class FTPSync(object):
             file_list.append(self.get_file(file,local_file))
       #如果当前ftp目录文件已经遍历完毕返回上一层目录
       self.conn.cwd( ".." )
-      return []
+      return file_list
     else:
       print('ERROR:The dir:%s is not exist' %ftp_path)
       return []

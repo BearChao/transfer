@@ -5,23 +5,26 @@
 # @Site    : http://blog.nickzy.com
 # @File    : call_func.py
 # @Software: PyCharm
+from control.put_data.put_mysql import putMySQL
 from control.task.task import DATATYPE
 
 
-def putData(task):
+def putData(task,file):
     type = task.dataType
     if type == DATATYPE.FTP.value:
-        return putFTP(task)
+        return putFTP(task,file)
         pass
     elif type == DATATYPE.MYSQL.value:
         print('2')
-        return putMySQL(task)
+        return putMySQL(task,file)
         pass
     elif type == DATATYPE.FILE.value:
-        return putFile(task)
+        return putFile(task,file)
     elif type == DATATYPE.ORACLE.value:
         pass
     elif type == DATATYPE.WEBDAV.value:
         pass
+    elif type == DATATYPE.SMB.value:
+        pass
     else:
-        return []
+        return False

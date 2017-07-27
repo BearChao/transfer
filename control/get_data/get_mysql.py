@@ -62,7 +62,7 @@ class MySQLClient:
     def getData(self,table,id_str):
         cur = self.conn.cursor()
         cur.execute('select * from %s;' %table)
-        data = cur.fetchall() #[(1, '1', None), (2, '2', '2')]
+        data = cur.fetchall() #list: [(1, '1', None), (2, '2', '2')]
         cur.close()
         file = 'temp/'+table+'.'+id_str  #命名规则：表名.任务id
         f = open(file, 'wb')
@@ -87,4 +87,3 @@ if __name__ == '__main__':
     item.password = '123456'
     item.target = 'test'
     item.id = 20170620003312
-    print(getMysql(item))

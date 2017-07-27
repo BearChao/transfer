@@ -18,10 +18,8 @@ def getDataFile(task):
     type = task.dataType
     if type == DATATYPE.FTP.value:
         return getFTP(task)
-        pass
     elif type == DATATYPE.MYSQL.value:
         return getMySQL(task)
-        pass
     elif type == DATATYPE.FILE.value:
         return getFile(task)
     elif type == DATATYPE.ORACLE.value:

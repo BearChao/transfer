@@ -12,9 +12,14 @@ from app.models import Task, db
 from control.common import LOGS
 from control.common.file_sender import sendFile
 from control.get_data.call_func import getDataFile
+from control.put_data.call_func import putData
 
 
-def run(id):
+def run(file):
+    list = file.split('.')
+    id = int(list[-1])
+    new_file = list[0]+'.'+list[1]
+    os.rename(file,new_file)
     #解析任务
     db.connect()
     task = Task.get(Task.finger == id)
@@ -26,26 +31,17 @@ def run(id):
     task.save()
     db.close()
     LOGS.info('开始任务：' + str(id)+":"+task.name)
-
-    files = getDataFile(task)
-
-    #发送文件
-    if files == None:
-        LOGS.error('文件发送失败：获取不到数据')
-        return -1
-    for f in files:
-        LOGS.info("send:"+f)
-        sendFile(f)
-        os.remove(f)
-
-    #记录日志
-    LOGS.info('文件发送完成')
+    result = putData(task,new_file)
+    if result:
+        LOGS.info('任务执行完成：'+file)
+    else:
+        LOGS.info('任务执行失败：'+file)
 
 if __name__ == '__main__':
 
     if len(sys.argv) > 1:
-        id = int(sys.argv[1])
-        run(id)
+        file = int(sys.argv[1])
+        run(file)
     else:
         LOGS.error('参数错误,未提供任务id')
         exit(-1)

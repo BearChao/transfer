@@ -9,7 +9,7 @@ import os
 import sys
 
 from app.models import db, Task
-from control.common import LOGS
+from control.common import LOGS, LOGR
 from control.put_data.call_func import putData
 
 
@@ -26,12 +26,12 @@ def run(path):
     task.count = task.count + 1
     task.save()
     db.close()
-    LOGS.info('开始任务：' + str(id)+":"+task.name)
+    LOGR.info('开始任务：' + str(id)+":"+task.name)
 
     #执行任务
     putData(task)
 
-    LOGS.info('数据传递完成')
+    LOGR.info('数据传递完成')
 
     #删除文件
     os.remove(path)
