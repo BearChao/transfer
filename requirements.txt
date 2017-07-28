@@ -8,3 +8,6 @@ mysql-connector==2.1.4
 SQLAlchemy
 python-crontab
 psutil
+pysmb
+pyasn1
+twisted
