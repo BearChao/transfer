@@ -16,7 +16,7 @@ from control.get_data.get_mysql import MySQLClient
 def putMySQL(configItem,file):
 
     try:
-        conn = mysql.connector.connect(host=configItem.dir,username=configItem.username,password=configItem.password,database=configItem.target)
+        conn = mysql.connector.connect(host=configItem.dir,user=configItem.username,password=configItem.password,database=configItem.target)
         with open(file,'rb') as f:
             data = pickle.load(f)
         #拼凑导入sql
@@ -31,7 +31,9 @@ def putMySQL(configItem,file):
         #导入
         cur = conn.cursor()
         cur.executemany(sql,data)
-    except:
-        LOGR.info('写入数据库出错，常见错误为数据库id重复')
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        LOGR.error('写入数据库出错:'+ str(e))
         return False
     return True

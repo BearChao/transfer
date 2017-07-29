@@ -11,3 +11,4 @@ psutil
 pysmb
 pyasn1
 twisted
+redis

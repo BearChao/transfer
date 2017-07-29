@@ -7,11 +7,10 @@
 # @Software: PyCharm
 import os
 import sys
-import subprocess
+import redis
 from app.models import db, Task
 from control.common import LOGS, LOGR
 from control.get_data.call_func import getDataFile
-
 
 def run(id):
     #解析任务
@@ -30,18 +29,20 @@ def run(id):
     files =getDataFile(task)
 
     #发送文件
+    r = redis.Redis()
     for f in files:
-        subprocess.call('./transfer_file -s '+f, shell=True)
-
+        #subprocess.call('./transfer_file -s '+f, shell=True)
+        #改为发送文件列表到redis
+        r.lpush('file',f)
         #记录日志
-    LOGR.info('数据传递完成')
+    LOGR.info('数据加入发送队列，等待发送：'+str(id)+':'+task.name)
 
     #删除文件
-    try:
-        for f in files:
-            os.remove(f)
-    except:
-        pass
+    # try:
+    #     for f in files:
+    #         os.remove(f)
+    # except:
+    #     pass
 
 if __name__ == '__main__':
 

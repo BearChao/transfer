@@ -1,4 +1,5 @@
+#!/usr/bin/env bash
 
-# nohup ./manage.py runserver 2>&1 &
+nohup ./manage.py runserver 2>&1 &
 
-python3 run_app_dev.py
+# python3 run_app_dev.py

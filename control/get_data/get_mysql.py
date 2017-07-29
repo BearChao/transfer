@@ -9,6 +9,7 @@ import pickle
 import mysql.connector
 
 from app.models import Task
+from control.common import LOGS
 
 
 def getMySQL(configItem):
@@ -60,10 +61,12 @@ class MySQLClient:
         cur.close()
 
     def getData(self,table,id_str):
+        LOGS.debug('获取表数据：'+table)
         cur = self.conn.cursor()
         cur.execute('select * from %s;' %table)
         data = cur.fetchall() #list: [(1, '1', None), (2, '2', '2')]
         cur.close()
+        LOGS.info('获取表数据完成：' + table)
         file = 'temp/'+table+'.'+id_str  #命名规则：表名.任务id
         f = open(file, 'wb')
         pickle.dump(data, f)

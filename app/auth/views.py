@@ -1,5 +1,7 @@
 
 from flask import render_template, redirect, request, url_for, flash, jsonify, current_app
+
+from control.common import LOGS
 from . import auth
 from .forms import LoginForm
 from app.models import User
@@ -17,7 +19,8 @@ def login():
                 return redirect(request.args.get('next') or url_for('main.index'))
             else:
                 flash('用户名或密码错误')
-        except:
+        except Exception as e:
+            LOGS.error(repr(e))
             flash('用户名不存在')
     stat = '外网端'
     if current_app.config.get('CLIENT_TYPE') == 'receiver':
