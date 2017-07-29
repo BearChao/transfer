@@ -36,15 +36,16 @@ def getSMB(task):
         list = task.tables.split(' ')
         share = list[0]
         path = list[1]
+        id_str = task.finger
         if len(list) == 3: #指定文件
             file = list[2]
             p = path + '/' + file
-            retrieveFile(samba,share,p)
+            retrieveFile(samba,share,p,id_str)
             files.append(p)
         else:
             list = retrieveFileList(samba,share,path)
             for l in list:
-                retrieveFile(samba,share,l)
+                retrieveFile(samba,share,l,id_str)
                 files.append(l)
         return files
 
@@ -70,8 +71,8 @@ def retrieveFileList(samba,share,path):
             result.append(file)
     return result
 
-def retrieveFile(samba,share,path):
-    file_path = 'temp/' + share + path
+def retrieveFile(samba,share,path,id_str):
+    file_path = 'temp/' + share + path + '.' + id_str
     try:
         mkdir(file_path)
         with open(file_path, 'wb') as f:

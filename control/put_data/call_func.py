@@ -6,6 +6,7 @@
 # @File    : call_func.py
 # @Software: PyCharm
 from control.put_data.put_mysql import putMySQL
+from control.put_data.put_smb import putSMB
 from control.task.task import DATATYPE
 
 
@@ -15,7 +16,6 @@ def putData(task,file):
         return putFTP(task,file)
         pass
     elif type == DATATYPE.MYSQL.value:
-        print('2')
         return putMySQL(task,file)
         pass
     elif type == DATATYPE.FILE.value:
@@ -25,6 +25,6 @@ def putData(task,file):
     elif type == DATATYPE.WEBDAV.value:
         pass
     elif type == DATATYPE.SMB.value:
-        pass
+        return putSMB(task,file)
     else:
         return False

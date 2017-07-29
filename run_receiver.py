@@ -32,6 +32,7 @@ def run(file):
     db.close()
     LOGS.info('开始任务：' + str(id)+":"+task.name)
     result = putData(task,new_file)
+    os.remove(new_file)
     if result:
         LOGS.info('任务执行完成：'+file)
     else:
