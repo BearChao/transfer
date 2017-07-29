@@ -37,12 +37,12 @@ def run(id):
         #记录日志
     LOGR.info('数据加入发送队列，等待发送：'+str(id)+':'+task.name)
 
-    #删除文件
-    # try:
-    #     for f in files:
-    #         os.remove(f)
-    # except:
-    #     pass
+    # 删除文件
+    try:
+        for f in files:
+            os.remove(f)
+    except:
+        pass
 
 if __name__ == '__main__':
 
