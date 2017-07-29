@@ -20,13 +20,13 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">地址\目录</label>
             <div class="col-sm-9">
-                {{ form.dir(class="form-control", placeholder="服务器地址or文件路径") }}
+                {{ form.dir(class="form-control", placeholder="服务器地址IP、文件路径") }}
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-3 control-label">端口号</label>
             <div class="col-sm-9">
-                {{ form.port(class="form-control",placeholder="服务器端口号,如MySQL端口号3306") }}
+                {{ form.port(class="form-control",placeholder="服务器端口号,如MySQL端口号3306,SMB文件共享139等") }}
             </div>
         </div>
         <div class="form-group">
@@ -44,13 +44,13 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">目标</label>
             <div class="col-sm-9">
-                {{ form.target(class="form-control",placeholder="目标文件夹or数据库名")}}
+                {{ form.target(class="form-control",placeholder="目标文件夹、数据库名、SMB共享的主机名")}}
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-3 control-label">表</label>
             <div class="col-sm-9">
-                {{ form.tables(class="form-control",placeholder="要传输的表名称 全库传输或非数据库请留空")}}
+                {{ form.tables(class="form-control",placeholder="数据库表名称(空格分隔，全库传输请留空)SMB(共享空间名 /相对目录 文件名，可为空)")}}
             </div>
         </div>
         {{ form.finger(type='hidden')}}

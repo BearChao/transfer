@@ -7,6 +7,7 @@
 # @Software: PyCharm
 from control.get_data.get_file import getFile
 from control.get_data.get_ftp import getFTP
+from control.get_data.get_smb import getSMB
 from control.task.task import DATATYPE
 from control.get_data.get_mysql import getMySQL
 
@@ -27,7 +28,7 @@ def getDataFile(task):
     elif type == DATATYPE.WEBDAV.value:
         pass
     elif type == DATATYPE.SMB.value:
-        pass
+        return getSMB(task)
     else:
         return []
 

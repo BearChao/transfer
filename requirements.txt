@@ -12,3 +12,4 @@ pysmb
 pyasn1
 twisted
 redis
+service_identity

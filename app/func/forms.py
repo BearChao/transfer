@@ -11,7 +11,7 @@ from wtforms.validators import DataRequired, Length, NumberRange
 
 
 class NewTaskForm(FlaskForm):
-    dataType = SelectField('任务类型',choices=[('file','本地文件'),('ftp','FTP'),('webDav','WebDAV'),('mysql','MySQL'),('oracle','Oracle')])
+    dataType = SelectField('任务类型',choices=[('file','本地文件'),('ftp','FTP'),('SMB','SMB文件共享'),('mysql','MySQL')])
     name = StringField('描述')
     dir = StringField('地址\目录')
     port = IntegerField('端口号',validators=[NumberRange(1,65535,'请输入正确的端口号')])
