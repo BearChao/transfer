@@ -8,6 +8,7 @@ from app.func.forms import NewTaskForm
 from app.func.scheduler import get_all_jobs, create_job, get_jobs
 from app.main.views import common_list
 from app.models import Task
+from control.common.file_and_folder import allow, notice
 from control.task.task import get_finger
 from . import func
 
@@ -26,7 +27,12 @@ def home():
             'boot_time': util.get_bootTime(), #启动时间
             'stat': stat #系统类别
             }
-    return render_template('func/home.html',current_user=current_user,info = info)
+    message = notice()
+    if message is not None:
+        return render_template('func/home.html',current_user=current_user,info = info,message = message)
+    else:
+        return render_template('func/home.html', current_user=current_user, info=info)
+
 
 #任务列表
 @func.route('/task/list', methods=['GET'])

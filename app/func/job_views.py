@@ -13,6 +13,7 @@ from app.func.scheduler import get_jobs, update_job_crontab, delete_job_crontab
 from . import func
 
 
+
 @func.route('/job/edit/<finger>/<index>',methods=['POST','GET'])
 @login_required
 def edit_job_page(finger,index):
@@ -43,3 +44,15 @@ def delete_job(finger,index):
         return render_template('auth/respond.json', state='success')
     else:
         return render_template('auth/respond.json', state='fail', message='操作失败')
+
+@func.route('/job/run/<finger>')
+@login_required
+def run(finger):
+    import subprocess
+    try:
+        out_bytes = subprocess.check_output('python3 run_sender.py '+ finger,shell=True,stderr=subprocess.PIPE)
+    except :
+        return render_template('fragment/message.html',message = "运行过程中出现错误，请检查任务配置是否正常\n详情可参考日志")
+    out = out_bytes.decode('utf-8')
+    return render_template('fragment/message.html',message = out)
+

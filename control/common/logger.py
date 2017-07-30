@@ -10,6 +10,8 @@
 import logging
 import time
 
+import sys
+
 
 class Logger:
     """
@@ -25,15 +27,21 @@ class Logger:
         file = time.strftime('%Y-%m-%d', time.localtime(time.time()))
         log_path = "logs/control/" + file + ".log"
         fh = logging.FileHandler(log_path)
+        sh = logging.StreamHandler(stream=sys.stdout)
 
         # create formatter
         fmt = "%(asctime)s %(levelname)s %(name)s: %(message)s"
         datefmt = "%Y-%m-%d %H:%M:%S"
         formatter = logging.Formatter(fmt, datefmt)
 
+        fmt2 = '%(message)s'
+        formatter2 = logging.Formatter(fmt2)
+
         # add handler and formatter to logger
         fh.setFormatter(formatter)
+        sh.setFormatter(formatter2)
         self.logger.addHandler(fh)
+        self.logger.addHandler(sh)
 
 
     def debug(self, msg):

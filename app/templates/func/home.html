@@ -9,12 +9,17 @@
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    {% for message in get_flashed_messages() %}
+                                    {% if message %}
                                         <div class="alert alert-warning">
                                             <button type="button" class="close" data-dismiss="alert">&times;</button>
                                             {{ message }}
+                                            <form id="uploadForm" enctype="multipart/form-data">
+                                                <input id="file" type="file" name="file"/>
+                                                <button id="upload" class="btn btn-info btn-sm" type="button">上传激活文件</button>
+                                            </form>
+
                                         </div>
-                                    {% endfor %}
+                                    {% endif %}
                                     <div class="my_panel">
                                         <div class="heading">欢迎信息</div>
                                         <div class="body">您好：{{ current_user.fullname }}！当前系统为<strong>{{ info.stat }}</strong></div>
@@ -75,3 +80,20 @@
     </div>
 
 </div>
+<script>
+$("button").click(function(){
+  $.ajax({
+        url: '{{ url_for('main.uploadkey') }}',
+        type: 'POST',
+        cache: false,
+        data: new FormData($('#uploadForm')[0]),
+        processData: false,
+        contentType: false
+    }).done(function(res) {
+        alert(res)
+    }).fail(function(res) {
+        alert(res)
+    });
+});
+
+</script>

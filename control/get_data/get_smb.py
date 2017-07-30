@@ -36,7 +36,7 @@ def getSMB(task):
         list = task.tables.split(' ')
         share = list[0]
         path = list[1]
-        id_str = task.finger
+        id_str = str(task.finger)
         if len(list) == 3: #指定文件
             file = list[2]
             p = path + '/' + file

@@ -1,3 +1,5 @@
+import datetime
+import pickle
 from flask import Flask
 from flask_login import LoginManager
 from conf.config import config
@@ -37,5 +39,8 @@ def create_app(config_name):
 
     from .func import  func as func_blueprint
     app.register_blueprint(func_blueprint)
+
+    if not os.path.isfile('conf/boost'):
+        pickle.dump(datetime.datetime.now(),open('conf/boost','wb'))
 
     return app

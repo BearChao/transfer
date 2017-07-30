@@ -10,9 +10,14 @@ import sys
 import redis
 from app.models import db, Task
 from control.common import LOGS, LOGR
+from control.common.file_and_folder import allow
 from control.get_data.call_func import getDataFile
 
 def run(id):
+
+    if not allow():
+        LOGS.error('系统激活失败，请联系厂家获取支持')
+        return
     #解析任务
     db.connect()
     task = Task.get(Task.finger == id)
@@ -35,14 +40,14 @@ def run(id):
         #改为发送文件列表到redis
         r.lpush('file',f)
         #记录日志
-    LOGR.info('数据加入发送队列，等待发送：'+str(id)+':'+task.name)
+    LOGS.info('数据加入发送队列，等待发送：'+str(id)+':'+task.name)
 
     # 删除文件
-    try:
-        for f in files:
-            os.remove(f)
-    except:
-        pass
+    # try:
+    #     for f in files:
+    #         os.remove(f)
+    # except:
+    #     pass
 
 if __name__ == '__main__':
 

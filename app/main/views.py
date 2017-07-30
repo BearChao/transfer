@@ -1,6 +1,7 @@
+import hashlib
 from os import listdir
 import os
-
+import subprocess
 from os.path import isfile, join
 
 from werkzeug.security import generate_password_hash
@@ -177,7 +178,7 @@ def log_delete():
             num = request.args.get('num')
             if not utils.del_transfer_log(int(num)):
                 state = 'fail'
-                message = '操作失败'
+                message = '操作失败,可能日志已经清空'
         return render_template('auth/respond.json',state = state, message = message)
     else:
         return render_template('logs/clear.html')
@@ -216,3 +217,17 @@ def clear():
     except:
         return render_template('auth/respond.json',state = 'fail',message = "操作失败，请稍后再试...")
     return render_template('auth/respond.json',state = 'success')
+
+@main.route('/uploadkey', methods=['POST'])
+def uploadkey():
+    file = request.files['file']
+    path = 'temp/key.temp.key'
+    file.save(path)
+    m = hashlib.md5()
+    m.update(open(path,'rb').read())
+    out = m.hexdigest()
+    os.remove(path)
+    if out == '2d6e56adabb2d726d15b5e59eda061d4':
+        open("conf/auth", "w+").close()
+        return render_template('auth/message.html',message= '激活成功！请重新登录')
+    return render_template('auth/message.html',message= '激活失败！请检查激活文件是否正确')

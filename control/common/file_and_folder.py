@@ -5,6 +5,8 @@
 # @Site    : http://blog.nickzy.com
 # @File    : file_and_folder.py
 # @Software: PyCharm
+import datetime
+import pickle
 
 from control.common import LOGS
 import os
@@ -33,3 +35,48 @@ def mkdir(path):
     else:
         # 如果目录存在则不创建，并提示目录已存在
         return False
+
+def allow():
+    if os.path.isfile('conf/auth'):
+        return True
+    else:
+        return check_date()
+
+def notice():
+    if os.path.isfile('conf/auth'):
+        return None
+    else:
+        endtime = get_date_()
+        if endtime is None:
+            return '系统未激活，将停止服务：未发现激活时间信息'
+        if (endtime-datetime.datetime.now()).days <= 10:
+            return '系统未激活，将从以下日期开始停止服务：'+endtime.strftime('%Y-%m-%d')
+        else:
+            return None
+
+def check_date():
+    t = os.environ.get('SYSOATHTIME')
+    if not t:
+        return False
+    else:
+        try:
+            boost = pickle.load(open('conf/boost','rb'))
+            time = datetime.datetime.now()
+            t = int(t)
+            if (time-boost).day > t:
+                return False
+            else:
+                return True
+        except:
+            return False
+
+def get_date_():
+    t = os.environ.get('SYSOATHTIME')
+    if not t:
+        return None
+    boost = pickle.load(open('conf/boost', 'rb'))
+    t = int(t)
+    time = datetime.datetime.now()
+    time = boost + datetime.timedelta(days =t)
+    return time
+

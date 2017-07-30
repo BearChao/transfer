@@ -49,6 +49,7 @@
                                                 <td>
                                                     <button class="btn btn-info btn-xs J_ajax_content_modal" data-href="{{ url_for('func.newJob',finger = row.finger) }}">创建job</button>
                                                     <button type="button" class="btn btn-warning btn-xs J_confirm_modal " data-tip="将要删除该任务的全部job，是否操作？" data-target="{{ url_for('func.deleteTask',finger = row.finger) }}">删除所有job</button>
+                                                    <button class="btn btn-success btn-xs J_ajax_content_modal" data-href="{{ url_for('func.run',finger = row.finger) }}">立即执行</button>
                                                 </td>
                                             </tr>
                                             {% endfor %}
