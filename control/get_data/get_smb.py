@@ -45,8 +45,8 @@ def getSMB(task):
         else:
             list = retrieveFileList(samba,share,path)
             for l in list:
-                retrieveFile(samba,share,l,id_str)
-                files.append(l)
+                file = retrieveFile(samba,share,l,id_str)
+                files.append(file)
         return files
 
     except Exception as e:

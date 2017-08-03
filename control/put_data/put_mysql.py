@@ -17,6 +17,7 @@ def putMySQL(configItem,file):
 
     try:
         conn = mysql.connector.connect(host=configItem.dir,user=configItem.username,password=configItem.password,database=configItem.target)
+        cur = conn.cursor()
         with open(file,'rb') as f:
             data = pickle.load(f)
         #拼凑导入sql
@@ -29,11 +30,17 @@ def putMySQL(configItem,file):
                 sql += ','
         sql += ')'
         #导入
-        cur = conn.cursor()
-        cur.executemany(sql,data)
+        for i in data:
+            exec(cur,sql,i)
         conn.commit()
         conn.close()
     except Exception as e:
         LOGR.error('写入数据库出错:'+ str(e))
         return False
     return True
+
+def exec(cur,sql,data):
+    try:
+        cur.execute(sql,list(data))
+    except:
+        return

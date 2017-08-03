@@ -10,6 +10,7 @@ from flask import render_template, request
 from flask_login import login_required
 
 from app.func.scheduler import get_jobs, update_job_crontab, delete_job_crontab
+from control.common import LOGS
 from . import func
 
 
@@ -50,8 +51,9 @@ def delete_job(finger,index):
 def run(finger):
     import subprocess
     try:
-        out_bytes = subprocess.check_output('python3 run_sender.py '+ finger,shell=True,stderr=subprocess.PIPE)
-    except :
+        out_bytes = subprocess.check_output('/usr/local/python3/bin/python3 run_sender.py '+ finger,shell=True,stderr=subprocess.PIPE)
+    except Exception as e:
+        LOGS.error('测试执行出现错误：'+str(e))
         return render_template('fragment/message.html',message = "运行过程中出现错误，请检查任务配置是否正常\n详情可参考日志")
     out = out_bytes.decode('utf-8')
     return render_template('fragment/message.html',message = out)

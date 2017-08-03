@@ -5,6 +5,7 @@
 # @Site    : http://blog.nickzy.com
 # @File    : call_func.py
 # @Software: PyCharm
+from control.put_data.put_file import putFile
 from control.put_data.put_ftp import putFTP
 from control.put_data.put_mysql import putMySQL
 from control.put_data.put_smb import putSMB

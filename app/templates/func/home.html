@@ -17,7 +17,6 @@
                                                 <input id="file" type="file" name="file"/>
                                                 <button id="upload" class="btn btn-info btn-sm" type="button">上传激活文件</button>
                                             </form>
-
                                         </div>
                                     {% endif %}
                                     <div class="my_panel">
@@ -81,7 +80,7 @@
 
 </div>
 <script>
-$("button").click(function(){
+$("#upload").click(function(){
   $.ajax({
         url: '{{ url_for('main.uploadkey') }}',
         type: 'POST',

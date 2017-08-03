@@ -9,9 +9,7 @@ import os
 import sys
 
 from app.models import Task, db
-from control.common import LOGS
-from control.common.file_sender import sendFile
-from control.get_data.call_func import getDataFile
+from control.common import LOGR
 from control.put_data.call_func import putData
 
 
@@ -24,21 +22,35 @@ def run(file):
     pass
     #解析任务
     db.connect()
-    task = Task.get(Task.finger == id)
-    if task is None:
-        LOGS.error('找不到对应任务：'+str(id))
+    try:
+        task = Task.get(Task.finger == id)
+    except:
+        LOGR.debug('找不到对应任务：'+str(id))
+        task = Task()
+        task.finger = id
+        task.name = ''
+        task.dataType = '0'
+        task.dir = ''
+        task.username = ''
+        task.password = ''
+        task.target = ''
+        task.port = ''
+        task.tables = ''
+        task.count = 0
+        task.save()
+        LOGR.info('发现新任务：' + str(id))
         exit(-1)
     #增加运行次数
     task.count = task.count + 1
     task.save()
     db.close()
-    LOGS.info('开始任务：' + str(id)+":"+task.name)
+    LOGR.info('开始任务：' + str(id)+":"+task.name)
     result = putData(task,new_file)
-    os.remove(new_file)
+    #os.remove(new_file)
     if result:
-        LOGS.info('任务执行完成：'+file)
+        LOGR.info('任务执行完成：'+file)
     else:
-        LOGS.info('任务执行失败：'+file)
+        LOGR.info('任务执行失败：'+file)
 
 if __name__ == '__main__':
 
@@ -46,5 +58,5 @@ if __name__ == '__main__':
         file = sys.argv[1]
         run(file)
     else:
-        LOGS.error('参数错误,未提供任务id')
+        LOGR.error('参数错误,未提供任务id')
         exit(-1)

@@ -10,9 +10,10 @@ from crontab import CronTab
 # 创建任务
 def create_job(finger_str,minute,enable = True):
     cron = CronTab(user=True)
-    command = 'python3 run_sender.py ' + finger_str
+    command = 'cd /root/transfer && /usr/local/python3/bin/python3 run_sender.py ' + finger_str
     job = cron.new(command=command,comment=finger_str)
     job.minute.every(minute)
+
     job.enable(enable)
     cron.write()
     return True

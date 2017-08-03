@@ -137,7 +137,7 @@ def log_task(file,page):
 def log_transfer_list():
     mypath = 'logs/transfer'
     files = [f[:-4] for f in listdir(mypath) if isfile(join(mypath, f))]
-    return render_template('logs/crontrol_list.html',files = files)
+    return render_template('logs/filetransfer_list.html',files = files)
 
 @main.route('/log/file/<file>/<page>')
 @login_required

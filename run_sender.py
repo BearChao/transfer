@@ -14,7 +14,6 @@ from control.common.file_and_folder import allow
 from control.get_data.call_func import getDataFile
 
 def run(id):
-
     if not allow():
         LOGS.error('系统激活失败，请联系厂家获取支持')
         return
@@ -28,7 +27,7 @@ def run(id):
     task.count = task.count + 1
     task.save()
     db.close()
-    LOGR.info('开始任务：' + str(id)+":"+task.name)
+    LOGS.info('开始任务：' + str(id)+":"+task.name)
 
     #执行任务
     files =getDataFile(task)

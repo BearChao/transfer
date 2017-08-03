@@ -8,6 +8,9 @@
 import datetime
 import pickle
 
+from flask import current_app
+
+from conf.timeout import SYSOATHTIME
 from control.common import LOGS
 import os
 
@@ -55,27 +58,23 @@ def notice():
             return None
 
 def check_date():
-    t = os.environ.get('SYSOATHTIME')
-    if not t:
-        return False
-    else:
-        try:
-            boost = pickle.load(open('conf/boost','rb'))
-            time = datetime.datetime.now()
-            t = int(t)
-            if (time-boost).day > t:
-                return False
-            else:
-                return True
-        except:
+    t = SYSOATHTIME
+    try:
+        boost = pickle.load(open('conf/boost','rb'))
+        time = datetime.datetime.now()
+        if (time-boost).days > t:
             return False
+        else:
+            return True
+    except Exception as e:
+        print('检查日期出错：'+str(e))
+        return False
 
 def get_date_():
-    t = os.environ.get('SYSOATHTIME')
+    t = SYSOATHTIME
     if not t:
         return None
     boost = pickle.load(open('conf/boost', 'rb'))
-    t = int(t)
     time = datetime.datetime.now()
     time = boost + datetime.timedelta(days =t)
     return time

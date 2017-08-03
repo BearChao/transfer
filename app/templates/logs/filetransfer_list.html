@@ -1,0 +1,31 @@
+<div class="content_wrapper">
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <aside>
+                    <header><i class="fa fa-fw fa-list-ul"></i>日志列表</header>
+                    <section>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="my_panel">
+                                            <ul class="list-group">
+                                                {% if not files %}
+                                                    暂无日志
+                                                {% endif %}
+                                                {% for i in files %}
+                                               <a href="javascript:void(0);" onclick="loadURL('{{ url_for('main.log_transfer',file = i, page = 1) }}')" class="list-group-item">{{ i }}</a>
+                                                {% endfor %}
+                                            </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </aside>
+            </div>
+        </div>
+    </div>
+
+</div>

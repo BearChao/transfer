@@ -17,12 +17,13 @@ def putSMB(task,file):
         samba = SMBConnection(task.username, task.password, 'mybase', task.target)
         samba.connect(task.dir, int(task.port))
         list = task.tables.split(' ')
-        share = list[0]
-        path = list[1]
-        l = len(share)+1+5
-        t = file[l:]
+        share = list[0] #TESt
+        path = list[1]  #/
+        s = file.split('/')[1]
+        l = len(s)+1+5
+        t = file[l:]  #temp/share/  ddddd
         if path[-1]=='/':
-            path += t
+            path += t   #/ddd
         else:
             path = path+'/'+t
         # 取路径
