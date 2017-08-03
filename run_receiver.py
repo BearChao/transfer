@@ -5,8 +5,13 @@
 # @Site    : http://blog.nickzy.com
 # @File    : run_sender.py
 # @Software: PyCharm
+import multiprocessing
 import os
 import sys
+
+import time
+
+import redis
 
 from app.models import Task, db
 from control.common import LOGR
@@ -46,17 +51,34 @@ def run(file):
     db.close()
     LOGR.info('开始任务：' + str(id)+":"+task.name)
     result = putData(task,new_file)
-    #os.remove(new_file)
+    os.remove(new_file)
     if result:
         LOGR.info('任务执行完成：'+file)
     else:
         LOGR.info('任务执行失败：'+file)
 
-if __name__ == '__main__':
+def worker():
+    try:
+        r = redis.Redis()
+        while True:
+            file = r.rpop('file')
+            run(file)
+            time.sleep(1)
+    except:
+        LOGR('redis连接失败，进程退出！')
+        return -1
 
-    if len(sys.argv) > 1:
-        file = sys.argv[1]
-        run(file)
-    else:
-        LOGR.error('参数错误,未提供任务id')
-        exit(-1)
+
+if __name__ == '__main__':
+    p1 = multiprocessing.Process(target=worker)
+    p1.daemon = True
+    p1.start()
+    LOGR.info('接收进程1启动成功')
+
+    p2 = multiprocessing.Process(target=worker)
+    p2.daemon = True
+    p2.start()
+    LOGR.info('接收进程2启动成功')
+
+    p1.join()
+    p2.join()
