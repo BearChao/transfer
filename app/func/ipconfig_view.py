@@ -35,17 +35,17 @@ def ipconfig():
         gateway = request.form.get('gateway')
         result = True
         if device == 'eth0':
-            result = changeNetwork('eth3',ip,mask,gateway)
+            result = changeNetwork('eth2',ip,mask,gateway)
         elif device == 'eth1':
-            result = changeNetwork('eth4', ip, mask, gateway)
+            result = changeNetwork('eth3', ip, mask, gateway)
         elif device == 'eth2':
-            result = changeNetwork('eth5', ip, mask, gateway)
+            result = changeNetwork('eth4', ip, mask, gateway)
         elif device == 'eth3':
-            result = changeNetwork('eth6', ip, mask, gateway)
+            result = changeNetwork('eth5', ip, mask, gateway)
         if result:
             message = '操作成功！'
         else:
-            message = '操作失败！'
+            message = '修改成功,需重启'
             return render_template('auth/respond.json',state = 'fail', message = message)
         return render_template('auth/respond.json',state = 'success', message = message)
     else:
@@ -56,26 +56,27 @@ def changeNetwork(device,ip,netmask,gateway):
     """
     @attention: change the network of the system
     """
-    try:
         #print(get_ip_address('eth5'))
 
-        path = "/etc/sysconfig/network-scripts/ifcfg-" + str(device)
-        file_handler = open(path, "r")
-        network_content = file_handler.read()
+    path = "/etc/sysconfig/network-scripts/ifcfg-" + str(device)
+    file_handler = open(path, "r")
+    network_content = file_handler.read()
+    file_handler.close()
+    conte = "IPADDR=%s\nNETMASK=%s\nGATEWAY=%s\n" % (ip, netmask, gateway)
+    num = network_content.find("IPADDR")
+    if num != -1:
+        network_content = network_content[:num] + conte
+        file_handler = open(path, "w")
+        file_handler.write(network_content)
         file_handler.close()
-        conte = "IPADDR=%s\nNETMASK=%s\nGATEWAY=%s\n" % (ip, netmask, gateway)
-        num = network_content.find("IPADDR")
-        if num != -1:
-            network_content = network_content[:num] + conte
-            file_handler = open(path, "w")
-            file_handler.write(network_content)
-            file_handler.close()
+    LOGS.info('ip修改成功：%s:%s:%s:%s' % (device, ip, gateway, netmask))
+    try:
         result = subprocess.call("sudo ifdown %s && sudo ifup %s" % (device, device),shell=True)
         if result == 0:
-            LOGS.info('ip修改成功：%s:%s:%s:%s' % (device,ip,gateway,netmask))
+            LOGS.info('网卡重启成功：%s:%s:%s:%s' % (device,ip,gateway,netmask))
             return True
         else:
-            LOGS.info('ip修改失败：%s:%s:%s:%s' % (device, ip, gateway, netmask))
+            LOGS.info('网卡重启失败：%s:%s:%s:%s' % (device, ip, gateway, netmask))
             return False
     except Exception as e:
         LOGS.error(str(e))
@@ -83,7 +84,7 @@ def changeNetwork(device,ip,netmask,gateway):
 
 def getNetwork():
     data = []
-    for i in range(3,7):  #3、4、5、6
+    for i in range(2,6):  #2、3、4、5
         path = "/etc/sysconfig/network-scripts/ifcfg-eth" + str(i)
         file_handler = open(path, "r")
         network_content = file_handler.read()

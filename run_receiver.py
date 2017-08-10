@@ -60,16 +60,21 @@ def run(file):
 def worker():
     try:
         r = redis.Redis()
-        while True:
-            file = r.rpop('file')
-            run(file)
-            time.sleep(1)
-    except:
+    except Exception as e:
         LOGR('redis连接失败，进程退出！')
+        print(str(e))
         return -1
+    while True:
+        file = r.rpop('file')
+        if file is not None:
+            run(file.decode())
+            time.sleep(1)
 
 
 if __name__ == '__main__':
+
+    worker()
+
     p1 = multiprocessing.Process(target=worker)
     p1.daemon = True
     p1.start()

@@ -100,6 +100,8 @@ class FTPSync(object):
         self.conn.storbinary('STOR %s'%ftp_path, file_handler)
       #如果远程路径不是目录，且上一层的目录也不存在，则提示给定远程路径错误
       else:
+        self.conn.mkd(os.path.dirname(ftp_path))
+        self.conn.storbinary('STOR %s' % ftp_path, file_handler)
         print('EROOR:The ftp path:%s is error' %ftp_path)
       file_handler.close()
     else:

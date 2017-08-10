@@ -137,22 +137,26 @@ def del_control_log(num):
     mypath = 'logs/control'
     try:
         files = [f for f in listdir(mypath) if isfile(join(mypath, f))]
-        for i in range(num):
-            if num < i+1:
-                break
+        if len(files) > num:
+            n = num
+        else:
+            n = len(files)
+        for i in range(n):
             os.remove(join(mypath,files[i]))
         return True
     except:
-        return False
+        pass
 
 #删除传输日志
 def del_transfer_log(num):
     mypath = 'logs/transfer'
     try:
         files = [f for f in listdir(mypath) if isfile(join(mypath, f))]
-        for i in range(num):
-            if num < i+1:
-                break
+        if len(files) > num:
+            n = num
+        else:
+            n = len(files)
+        for i in range(n):
             os.remove(join(mypath, files[i]))
         return True
     except:
