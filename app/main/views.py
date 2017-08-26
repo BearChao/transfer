@@ -8,7 +8,7 @@ from werkzeug.security import generate_password_hash
 
 from app import get_logger, get_config
 import math
-from flask import render_template, redirect, url_for, flash, request, current_app
+from flask import render_template, redirect, url_for, flash, request, current_app, jsonify
 from flask_login import login_required, current_user
 from app import utils
 from app.main.forms import CfgNotifyForm, UserForm
@@ -231,3 +231,12 @@ def uploadkey():
         open("conf/auth", "w+").close()
         return render_template('auth/message.html',message= '激活成功！请重新登录')
     return render_template('auth/message.html',message= '激活失败！请检查激活文件是否正确')
+
+import monitor
+@main.route('/info',methods=['POST','get'])
+@login_required
+def get_info():
+    dict = {}
+    dict['cpu'] = monitor.cpuinfo()
+    dict['mem'],dict['mem_free'] = monitor.meminfo()
+    return jsonify(dict)

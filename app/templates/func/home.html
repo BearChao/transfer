@@ -57,6 +57,13 @@
                                         </div>
                                     </div>
                                     <div class="my_panel">
+                                        <div class="heading">运行状态</div>
+                                        <div class="body" style="height: 510px">
+                                             <div id="chart1" style="height:500px;width:49%;border:1px solid #ccc;padding:2px;float: left"></div>
+                                             <div id="chart2" style="height:500px;width:49%;border:1px solid #ccc;padding:2px;float: right"></div>
+                                        </div>
+                                    </div>
+                                    <div class="my_panel">
                                         <div class="heading">开发团队</div>
                                         <div class="body">
                                             <table class="table table-striped">
@@ -94,5 +101,87 @@ $("#upload").click(function(){
         alert(res)
     });
 });
+
+var date = [];
+var data =[];
+var data2 = [];
+
+var myChart = echarts.init(document.getElementById('chart1'));
+var chart2 = echarts.init(document.getElementById('chart2'));
+// 基于准备好的dom，初始化echarts实例
+
+var now = new Date();
+date.push(now.toLocaleTimeString());
+data.push(0);
+data2.push(0);
+
+// 指定图表的配置项和数据
+var option = {
+    title: {
+        text: 'CPU占用'
+    },
+    tooltip: {},
+
+    xAxis: {
+        data: date
+    },
+    yAxis: {},
+    series: [{
+        name: 'cpu',
+        type: 'line',
+        data: data
+    }]
+};
+var option2 = {
+    title: {
+        text: '内存占用'
+    },
+    tooltip: {},
+
+    xAxis: {
+        data: date
+    },
+    yAxis: {},
+    series: [{
+        name: '模拟数据',
+        type: 'line',
+        data: data2
+    }]
+};
+
+ // 使用刚指定的配置项和数据显示图表。
+  myChart.setOption(option);
+  chart2.setOption(option2);
+
+    // 异步更新数据 （以后，定时post，取回1个数据）
+    var timeTicket = setInterval(function () {
+        $.post('/info').done(function (d) {
+            time = new Date();
+            date.push(time.toLocaleTimeString());
+            if (data.length > 100){
+                date.shift();
+                data.shift();
+                data2.shift();
+            }
+            data.push(d.cpu);
+            data2.push(d.mem);
+            myChart.setOption({
+                xAxis:{
+                    data:date
+                },
+                series:[{
+                data: data
+                }]
+            });
+            chart2.setOption({
+                xAxis:{
+                    data:date
+                },
+                series:[{
+                data: data2
+                }]
+            });
+        });
+    }, 3000);
 
 </script>
