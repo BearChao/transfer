@@ -31,12 +31,16 @@ def run(id):
 
     #执行任务
     files =getDataFile(task)
+    if len(files) == 0:
+        LOGS.info('未获取到任何数据：' + str(id) + ':' + task.name)
+        return 0
 
     #发送文件
     r = redis.Redis()
     for f in files:
         #subprocess.call('./transfer_file -s '+f, shell=True)
         #改为发送文件列表到redis
+        print(f)
         r.lpush('file',f)
         #记录日志
     LOGS.info('数据加入发送队列，等待发送：'+str(id)+':'+task.name)

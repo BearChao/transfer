@@ -73,8 +73,6 @@ def worker():
 
 if __name__ == '__main__':
 
-    worker()
-
     p1 = multiprocessing.Process(target=worker)
     p1.daemon = True
     p1.start()
