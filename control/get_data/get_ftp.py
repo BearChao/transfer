@@ -12,194 +12,114 @@ import socket
 
 
 def getFTP(task):
-    conn = FTPSync(task.target, int(task.port), str(task.finger))
-    conn.login(task.username, task.password)
-    list = conn.get_dir(task.dir, 'temp')
+    conn = MyFTP(task.target, int(task.port), str(task.finger))
+    conn.Login(task.username, task.password)
+    list = conn.DownLoadFileTree('temp', task.dir)
     return list
 
 
-class FTPSync(object):
-    conn = ftplib.FTP()
+class MyFTP:
+    ftp = ftplib.FTP()
+    bIsDir = False
+    path = ""
+    finger = ""
+    list = []
 
-    def __init__(self, host, port, id_str):
-        self.conn.connect(host, port)
-        self.id_str = id_str
+    def __init__(self, host, port=21, finger='temp'):
+        self.ftp.connect(host, port=port)
+        self.finger = finger
 
-    def login(self, username, password):
-        self.conn.login(username, password)
-        self.conn.set_pasv(False)
-        print(self.conn.welcome)
+    def Login(self, user, passwd):
+        self.ftp.login(user, passwd)
+        self.ftp.set_pasv(True)
+        self.ftp.encoding = 'utf8'
+        print(self.ftp.welcome)
 
-    def test(self, ftp_path):
-        print(ftp_path)
-        print(self._is_ftp_dir(ftp_path))
-        print(self.conn.nlst(ftp_path))
-        self.conn.retrlines('LIST ./a/b')
-        ftp_parent_path = os.path.dirname(ftp_path)
-        ftp_dir_name = os.path.basename(ftp_path)
-        print(ftp_parent_path)
-        print(ftp_dir_name)
+    def DownLoadFile(self, LocalFile, RemoteFile):
+        file = LocalFile + '.' + self.finger
+        file_handler = open(file, 'wb')
+        self.ftp.retrbinary('RETR %s' % (RemoteFile), file_handler.write)
+        file_handler.close()
+        return file
 
-    def _is_ftp_file(self, ftp_path):
-        try:
-            dirname = os.path.dirname(ftp_path)
-            if dirname == '':
-                dirname = '.'
-            if ftp_path in self.conn.nlst(dirname):
-                return True
-            else:
-                return False
-        except ftplib.error_perm:
+    def UpLoadFile(self, LocalFile, RemoteFile):
+        # 文件不存在
+        if os.path.isfile(LocalFile) == False:
+            return False
+        file_handler = open(LocalFile, "rb")
+
+        if self.isDir(RemoteFile):
+            self.ftp.storbinary('STOR %s' % RemoteFile, file_handler, 4096)
+        else:
+            dest_dirname = RemoteFile.split('/')
+            local_file_name = os.path.basename(LocalFile)
+            for subdir in dest_dirname:
+                try:
+                    self.ftp.cwd(subdir)
+                except ftplib.error_perm:
+                    self.ftp.mkd(subdir)
+                    self.ftp.cwd(subdir)
+            self.ftp.storbinary('STOR %s' % local_file_name, file_handler, 4096)
+
+        file_handler.close()
+        return True
+
+    def UpLoadFileTree(self, LocalDir, RemoteDir):
+        if os.path.isdir(LocalDir) == False:
             return False
 
-    def _ftp_list(self, line):
-        list = line.split(' ')
-        if self.ftp_dir_name == list[-1] and list[0].startswith('d'):
-            self._is_dir = True
+        LocalNames = os.listdir(LocalDir)
 
-    def _is_ftp_dir(self, ftp_path):
-        ftp_path = ftp_path.rstrip('/')
-        ftp_parent_path = os.path.dirname(ftp_path)
-        if ftp_parent_path == '':
-            ftp_parent_path = '.'
-        self.ftp_dir_name = os.path.basename(ftp_path)
-        self._is_dir = False
-        if ftp_path == '.' or ftp_path == './' or ftp_path == '':
-            self._is_dir = True
-        else:
-            # this ues callback function ,that will change _is_dir value
-            try:
-                self.conn.retrlines('LIST %s' % ftp_parent_path, self._ftp_list)
-            except ftplib.error_perm:
-                return self._is_dir
-        return self._is_dir
+        self.ftp.cwd(RemoteDir)
 
-    def get_file(self, ftp_path,local_path='.'):
-        ftp_path = ftp_path.rstrip('/')
-        if self._is_ftp_file(ftp_path):
-            file_name = os.path.basename(ftp_path)+'.'+self.id_str
-            # 如果本地路径是目录，下载文件到该目录
-            if os.path.isdir(local_path):
-                f = os.path.join(local_path, file_name)
-                file_handler = open(f, 'wb')
-                self.conn.retrbinary("RETR %s" % (ftp_path), file_handler.write)
-                file_handler.close()
-                return f
-            # 如果本地路径不是目录，但上层目录存在，则按照本地路径的文件名作为下载的文件名称
-            elif os.path.isdir(os.path.dirname(local_path)):
-                file_handler = open(local_path, 'wb')
-                self.conn.retrbinary("RETR %s" % (ftp_path), file_handler.write)
-                file_handler.close()
-                return local_path
-            # 如果本地路径不是目录，且上层目录不存在，则退出
+        for Local in LocalNames:
+            src = os.path.join(LocalDir, Local)
+            if os.path.isdir(src):
+                self.UpLoadFileTree(src, Local)
             else:
-                print('EROOR:The dir:%s is not exist' % os.path.dirname(local_path))
-                return None
-        else:
-            print('EROOR:The ftp file:%s is not exist' % ftp_path)
-            return None
+                self.UpLoadFile(src, Local)
 
-    def put_file(self, local_path, ftp_path='.'):
-        ftp_path = ftp_path.rstrip('/')
-        if os.path.isfile(local_path):
-            file_handler = open(local_path, "rb")
-            local_file_name = os.path.basename(local_path)
-            # 如果远程路径是个目录，则上传文件到这个目录，文件名不变
-            if self._is_ftp_dir(ftp_path):
-                self.conn.storbinary('STOR %s' % os.path.join(ftp_path, local_file_name), file_handler)
-            # 如果远程路径的上层是个目录，则上传文件，文件名按照给定命名
-            elif self._is_ftp_dir(os.path.dirname(ftp_path)):
-                print('STOR %s' % ftp_path)
-                self.conn.storbinary('STOR %s' % ftp_path, file_handler)
-            # 如果远程路径不是目录，且上一层的目录也不存在，则自动创建目录再上传
+        self.ftp.cwd("..")
+        return
+
+    def DownLoadFileTree(self, LocalDir, RemoteDir):
+
+        if os.path.isdir(LocalDir) == False:
+            os.makedirs(LocalDir)
+        self.ftp.cwd(RemoteDir)
+
+        RemoteNames = self.ftp.nlst()
+
+        for file in RemoteNames:
+            Local = os.path.join(LocalDir, file)
+            if self.isDir(file):
+                self.DownLoadFileTree(Local, file)
             else:
-                #self.conn.mkd(os.path.dirname(ftp_path))
-                dest_dirname = ftp_path.split('/')[:-1]
-                for subdir in dest_dirname:
-                    try:
-                        self.conn.cwd(subdir)
-                    except ftplib.error_perm:
-                        self.conn.mkd(subdir)
-                        self.conn.cwd(subdir)
-                self.conn.storbinary('STOR %s' % local_file_name, file_handler)
+                l = self.DownLoadFile(Local, file)
+                self.list.append(l)
+        self.ftp.cwd("..")
+        return self.list
 
-                #print('EROOR:The ftp path:%s is error' % ftp_path)
-            file_handler.close()
-        else:
-            print('ERROR:The file:%s is not exist' % local_path)
+    def show(self, list):
+        result = list.lower().split(" ")
 
-    def get_dir(self, ftp_path, local_path='.', begin=True):
-        ftp_path = ftp_path.rstrip('/')
-        # 当ftp目录存在时下载
-        files = []
-        if self._is_ftp_dir(ftp_path):
-            # 如果下载到本地当前目录下，并创建目录
-            # 下载初始化：如果给定的本地路径不存在需要创建，同时将ftp的目录存放在给定的本地目录下。
-            # ftp目录下文件存放的路径为local_path=local_path+os.path.basename(ftp_path)
-            # 例如：将ftp文件夹a下载到本地的a/b目录下，则ftp的a目录下的文件将下载到本地的a/b/a目录下
-            if begin:
-                if not os.path.isdir(local_path):
-                    os.makedirs(local_path)
-                local_path = os.path.join(local_path, os.path.basename(ftp_path))
-            # 如果本地目录不存在，则创建目录
-            if not os.path.isdir(local_path):
-                os.makedirs(local_path)
-            # 进入ftp目录，开始递归查询
-            self.conn.cwd(ftp_path)
-            ftp_files = self.conn.nlst()
-            for file in ftp_files:
-                local_file = os.path.join(local_path, file)
-                # 如果file ftp路径是目录则递归上传目录（不需要再进行初始化begin的标志修改为False）
-                # 如果file ftp路径是文件则直接上传文件
-                if self._is_ftp_dir(file):
-                    self.get_dir(file, local_file, False)
-                else:
-                    file = self.get_file(file,local_path=local_file+'.'+self.id_str)
-                    if file is not None:
-                        files.append(file)
-            # 如果当前ftp目录文件已经遍历完毕返回上一层目录
-            self.conn.cwd("..")
-            return files
-        else:
-            print('ERROR:The dir:%s is not exist' % ftp_path)
-            return []
+        if self.path.split(" ")[-1] in result and result[0].startswith('d'):
+            self.bIsDir = True
 
-    def put_dir(self, local_path, ftp_path='.', begin=True):
-        ftp_path = ftp_path.rstrip('/')
-        # 当本地目录存在时上传
-        if os.path.isdir(local_path):
-            # 上传初始化：如果给定的ftp路径不存在需要创建，同时将本地的目录存放在给定的ftp目录下。
-            # 本地目录下文件存放的路径为ftp_path=ftp_path+os.path.basename(local_path)
-            # 例如：将本地文件夹a上传到ftp的a/b目录下，则本地a目录下的文件将上传的ftp的a/b/a目录下
-            if begin:
-                if not self._is_ftp_dir(ftp_path):
-                    self.conn.mkd(ftp_path)
-                ftp_path = os.path.join(ftp_path, os.path.basename(local_path))
-                # 如果ftp路径不是目录，则创建目录
-            if not self._is_ftp_dir(ftp_path):
-                self.conn.mkd(ftp_path)
+    def isDir(self, path):
+        self.bIsDir = False
+        self.path = path
+        # this ues callback function ,that will change bIsDir value
+        self.ftp.retrlines('LIST', self.show)
 
-            # 进入本地目录，开始递归查询
-            os.chdir(local_path)
-            local_files = os.listdir('.')
-            for file in local_files:
-                # 如果file本地路径是目录则递归上传目录（不需要再进行初始化begin的标志修改为False）
-                # 如果file本地路径是文件则直接上传文件
-                if os.path.isdir(file):
-                    ftp_path = os.path.join(ftp_path, file)
-                    self.put_dir(file, ftp_path, False)
-                else:
-                    self.put_file(file, ftp_path)
-            # 如果当前本地目录文件已经遍历完毕返回上一层目录
-            os.chdir("..")
-        else:
-            print('ERROR:The dir:%s is not exist' % local_path)
-            return
+        return self.bIsDir
 
 
 if __name__ == '__main__':
-    ftp = FTPSync('127.0.0.1', 21, '测试')
-    ftp.login('zynick', 'define')
+    # ftp = FTPSync('127.0.0.1', 21, '测试')
+    # ftp.login('zynick', 'define')
+    ftp = MyFTP('192.168.1.200')
+    ftp.Login('xaleap', 'admin123')
 
     # 上传文件，不重命名
     # ftp.put_file('111.txt','a/b')
@@ -218,5 +138,7 @@ if __name__ == '__main__':
     # 上传到不存在的文件夹
     # ftp.put_dir('b','aa/B/')
 
-    #ftp.get_dir('Pictures/wall','/Users/zynick/temp')
-    ftp.put_file('/Users/zynick/Pictures/wall/img_0284.jpg','a/b/c.jpg')
+    a = ftp.DownLoadFileTree('/Users/zynick/temp', 'a')
+    print(a)
+
+    #ftp.UpLoadFile('/Users/zynick/Pictures/wall/img_0284.jpg','a/b/c d')

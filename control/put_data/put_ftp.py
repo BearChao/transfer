@@ -6,15 +6,15 @@
 # @File    : put_ftp.py
 # @Software: PyCharm
 from control.common import LOGR
-from control.get_data.get_ftp import FTPSync
+from control.get_data.get_ftp import MyFTP
 
 
 def putFTP(task,file):
     try:
-        conn = FTPSync(task.target, task.port, str(task.finger))
-        conn.login(task.username, task.password)
+        conn = MyFTP(task.target, int(task.port), str(task.finger))
+        conn.Login(task.username, task.password)
         path = file[5:]
-        conn.put_file(file,path)
+        conn.UpLoadFile(file,path)
         return True
     except Exception as e:
         LOGR.error('FTP上传错误：'+str(e))
