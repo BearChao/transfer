@@ -105,7 +105,10 @@ def newTask():
         task.port = request.form['port']
         task.tables = request.form['tables']
         task.target = request.form['target']
-        #todo 检测参数是否正确
+        if 'delete' in request.form:
+            task.delete = 1
+        else:
+            task.delete = 0
         task.save()
         return render_template('auth/respond.json',state="success")
     return render_template('fragment/new_task.html', form = form)

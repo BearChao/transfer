@@ -6,7 +6,7 @@
 # @File    : forms.py
 # @Software: PyCharm
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, SelectField, IntegerField
+from wtforms import StringField, SubmitField, SelectField, IntegerField,BooleanField
 from wtforms.validators import DataRequired, Length, NumberRange
 
 
@@ -21,3 +21,4 @@ class NewTaskForm(FlaskForm):
     tables = StringField('数据表')
     finger = StringField('finger')
     count = IntegerField('运行次数')
+    delete = BooleanField()

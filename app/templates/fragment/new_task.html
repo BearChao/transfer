@@ -53,6 +53,12 @@
                 {{ form.tables(class="form-control",placeholder="数据库表名称(空格分隔，全库传输请留空)SMB(共享空间名 /相对目录 文件名，可为空)")}}
             </div>
         </div>
+        <div class="form-group" id="delete">
+            <label class="col-sm-3 control-label">删除源文件</label>
+            <div class="col-sm-9">
+                {{ form.delete(id="delete",class="form-control")}}
+            </div>
+        </div>
         {{ form.finger(type='hidden')}}
     </div>
 
@@ -63,26 +69,40 @@
 </form>
 
 <script>
-    $("#dataType").change(function(){
+    function chenge() {
         console.log("changed");
-        var val =  $("#dataType").val();
-        switch(val){
+        var val = $("#dataType").val();
+        switch (val) {
             case "mysql":
                 $("#dir").children("label").text("IP地址");
                 $("#target").children("label").text("数据库名");
                 $("#tables").show();
                 $("#tables").children("label").text("表");
+                $("#delete").hide();
                 break;
             case "ftp":
                 $("#dir").children("label").text("服务器目录");
                 $("#target").children("label").text("IP地址");
                 $("#tables").hide();
+                $("#delete").show();
                 break;
             case "SMB":
                 $("#dir").children("label").text("IP地址");
                 $("#target").children("label").text("共享主机名");
                 $("#tables").show();
                 $("#tables").children("label").text("空间名 /目录");
+                $("#delete").hide();
+                break;
+            case "file":
+                $("#delete").hide();
         }
+    }
+
+    $(document).ready(function(){
+        chenge()
+    });
+
+    $("#dataType").change(function(){
+        chenge()
     });
 </script>
