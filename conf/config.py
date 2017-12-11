@@ -1,6 +1,8 @@
 import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
+#是否删除文件
+DELETE_FILE = False
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'super-secret'
@@ -9,6 +11,8 @@ class Config:
 
     #设置接收端
     #CLIENT_TYPE = 'receiver'
+
+
 
     @staticmethod
     def init_app(app):

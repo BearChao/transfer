@@ -8,13 +8,13 @@
 import ftplib
 from ftplib import FTP
 import os, sys, string, datetime, time
-import socket
 
 
 def getFTP(task):
     conn = MyFTP(task.target, int(task.port), str(task.finger))
     conn.Login(task.username, task.password)
     list = conn.DownLoadFileTree('temp', task.dir)
+    conn.quit()
     return list
 
 
@@ -48,18 +48,19 @@ class MyFTP:
             return False
         file_handler = open(LocalFile, "rb")
 
-        if self.isDir(RemoteFile):
+        dirname = os.path.dirname(RemoteFile)
+        file_name = os.path.basename(RemoteFile)
+        if self.isDir(dirname):
             self.ftp.storbinary('STOR %s' % RemoteFile, file_handler, 4096)
         else:
-            dest_dirname = RemoteFile.split('/')
-            local_file_name = os.path.basename(LocalFile)
+            dest_dirname = dirname.split('/')
             for subdir in dest_dirname:
                 try:
                     self.ftp.cwd(subdir)
                 except ftplib.error_perm:
                     self.ftp.mkd(subdir)
                     self.ftp.cwd(subdir)
-            self.ftp.storbinary('STOR %s' % local_file_name, file_handler, 4096)
+            self.ftp.storbinary('STOR %s' % file_name, file_handler, 4096)
 
         file_handler.close()
         return True
@@ -114,6 +115,9 @@ class MyFTP:
 
         return self.bIsDir
 
+    def quit(self):
+        self.ftp.quit()
+
 
 if __name__ == '__main__':
     # ftp = FTPSync('127.0.0.1', 21, '测试')
@@ -138,7 +142,7 @@ if __name__ == '__main__':
     # 上传到不存在的文件夹
     # ftp.put_dir('b','aa/B/')
 
-    a = ftp.DownLoadFileTree('/Users/zynick/temp', 'a')
-    print(a)
+    # a = ftp.DownLoadFileTree('/Users/zynick/temp', 'a')
+    # print(a)
 
-    #ftp.UpLoadFile('/Users/zynick/Pictures/wall/img_0284.jpg','a/b/c d')
+    #ftp.UpLoadFile('/Users/zynick/Pictures/wall/img_0284.jpg','a/b/c/d.txt')

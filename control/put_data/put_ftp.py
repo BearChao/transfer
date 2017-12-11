@@ -13,8 +13,11 @@ def putFTP(task,file):
     try:
         conn = MyFTP(task.target, int(task.port), str(task.finger))
         conn.Login(task.username, task.password)
+        conn.ftp.cwd(task.dir.rstrip())
         path = file[5:]
+        print(path)
         conn.UpLoadFile(file,path)
+        conn.quit()
         return True
     except Exception as e:
         LOGR.error('FTP上传错误：'+str(e))
