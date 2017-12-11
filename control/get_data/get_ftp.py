@@ -13,7 +13,10 @@ import os, sys, string, datetime, time
 def getFTP(task):
     conn = MyFTP(task.target, int(task.port), str(task.finger))
     conn.Login(task.username, task.password)
-    list = conn.DownLoadFileTree('temp', task.dir)
+    if task.delete and task.delete == 1:
+        list = conn.DownLoadFileTreeAndDelete('temp', task.dir)
+    else:
+        list = conn.DownLoadFileTree('temp', task.dir)
     conn.quit()
     return list
 
@@ -98,6 +101,25 @@ class MyFTP:
             else:
                 l = self.DownLoadFile(Local, file)
                 self.list.append(l)
+        self.ftp.cwd("..")
+        return self.list
+
+    def DownLoadFileTreeAndDelete(self, LocalDir, RemoteDir):
+
+        if os.path.isdir(LocalDir) == False:
+            os.makedirs(LocalDir)
+        self.ftp.cwd(RemoteDir)
+
+        RemoteNames = self.ftp.nlst()
+
+        for file in RemoteNames:
+            Local = os.path.join(LocalDir, file)
+            if self.isDir(file):
+                self.DownLoadFileTree(Local, file)
+            else:
+                l = self.DownLoadFile(Local, file)
+                self.list.append(l)
+                self.ftp.delete(file)
         self.ftp.cwd("..")
         return self.list
 
