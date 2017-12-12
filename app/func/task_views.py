@@ -129,6 +129,7 @@ def editTask(finger):
     form.tables.data = task.tables
     form.target.data = task.target
     form.count.data = task.count
+    form.delete.data = task.delete
     return render_template('fragment/new_task.html', form=form)
 
 # #查看job详情

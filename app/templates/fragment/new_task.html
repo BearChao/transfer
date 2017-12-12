@@ -98,8 +98,13 @@
         }
     }
 
+    var d = {{ form.delete.data }};
     $(document).ready(function(){
-        chenge()
+        chenge();
+
+        if ( d === 1){
+            $("#delete").prop('checked', true);
+        }
     });
 
     $("#dataType").change(function(){
