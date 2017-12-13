@@ -84,20 +84,23 @@ def changeNetwork(device,ip,netmask,gateway):
 
 def getNetwork():
     data = []
-    for i in range(2,6):  #2、3、4、5
-        path = "/etc/sysconfig/network-scripts/ifcfg-eth" + str(i)
-        file_handler = open(path, "r")
-        network_content = file_handler.read()
-        file_handler.close()
-        num = network_content.find("IPADDR")
-        d = []
-        if num != -1:
-            s = network_content[num:]
-            l = s.split('\n')
-            d.append(l[0].replace('IPADDR=',''))
-            d.append(l[1].replace('NETMASK=',''))
-            d.append(l[2].replace('GATEWAY=',''))
-        data.append(d)
+    try:
+        for i in range(2,6):  #2、3、4、5
+            path = "/etc/sysconfig/network-scripts/ifcfg-eth" + str(i)
+            file_handler = open(path, "r")
+            network_content = file_handler.read()
+            file_handler.close()
+            num = network_content.find("IPADDR")
+            d = []
+            if num != -1:
+                s = network_content[num:]
+                l = s.split('\n')
+                d.append(l[0].replace('IPADDR=',''))
+                d.append(l[1].replace('NETMASK=',''))
+                d.append(l[2].replace('GATEWAY=',''))
+            data.append(d)
+    except:
+        data=[['获取失败','',''],['获取失败','',''],['获取失败','',''],['获取失败','','']]
     return data
 
 
