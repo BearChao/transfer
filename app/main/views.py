@@ -8,7 +8,7 @@ from werkzeug.security import generate_password_hash
 
 from app import get_logger, get_config
 import math
-from flask import render_template, redirect, url_for, flash, request, current_app, jsonify
+from flask import render_template, redirect, url_for, flash, request, current_app, jsonify, send_from_directory
 from flask_login import login_required, current_user
 from app import utils
 from app.main.forms import CfgNotifyForm, UserForm
@@ -114,6 +114,25 @@ def log_task_list():
     files = [f[:-4] for f in listdir(mypath) if isfile(join(mypath, f))]
     return render_template('logs/crontrol_list.html',files = files)
 
+@main.route('/log/download/<type>/<file>')
+@login_required
+def log_download(type,file):
+    from flask import abort
+    if type and file:
+        file = file+'.log'
+        path = current_app.root_path[:-3]
+        if type == 'web':
+            return send_from_directory(path+'logs','web.log',as_attachment=True)
+        elif type == 'control':
+            return send_from_directory(path+'logs/control',file,as_attachment=True)
+        elif type == 'transfer':
+            return send_from_directory(path+'logs/transfer',file,as_attachment=True)
+        else:
+            abort(404)
+    else:
+
+        abort(404)
+
 @main.route('/log/task/<file>/<page>')
 @login_required
 def log_task(file,page):
@@ -130,7 +149,7 @@ def log_task(file,page):
             i += 1
             if j >= count:
                 break
-    return render_template('logs/control.html', log=log, page=page, file = file)
+    return render_template('logs/control.html', log=log, page=page, file = file,type='control')
 
 @main.route('/log/file')
 @login_required
@@ -155,7 +174,7 @@ def log_transfer(file,page):
             i += 1
             if j >= count:
                 break
-    return render_template('logs/control.html', log=log, page=page, file = file)
+    return render_template('logs/control.html', log=log, page=page, file = file,type='transfer')
 
 
 @main.route('/log/delete')
