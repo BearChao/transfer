@@ -54,7 +54,7 @@ class Task(BaseModel):
     port = CharField() #端口号
     tables = CharField() #数据表，空格间隔
     count = IntegerField() #执行次数
-    delete = IntegerField() #FTP是否删除源文件
+    d = IntegerField() #FTP是否删除源文件
 
 # class Job(BaseModel):
 #     finger = IntegerField() #任务编号

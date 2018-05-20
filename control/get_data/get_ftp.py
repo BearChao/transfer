@@ -13,7 +13,7 @@ import os, sys, string, datetime, time
 def getFTP(task):
     conn = MyFTP(task.target, int(task.port), str(task.finger))
     conn.Login(task.username, task.password)
-    if task.delete and task.delete == 1:
+    if task.d and task.d == 1:
         list = conn.DownLoadFileTreeAndDelete('temp', task.dir)
     else:
         list = conn.DownLoadFileTree('temp', task.dir)

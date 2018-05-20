@@ -7,7 +7,7 @@ from app.func import util
 from app.func.forms import NewTaskForm
 from app.func.scheduler import get_all_jobs, create_job, get_jobs
 from app.main.views import common_list
-from app.models import Task
+from app.models import Task, db
 from control.common.file_and_folder import allow, notice
 from control.task.task import get_finger
 from . import func
@@ -79,8 +79,11 @@ def deleteTask(finger):
     try:
         task = Task.get(Task.finger == finger)
         task.delete_instance()
+        #Task.delete().where(Task.finger == task.finger).execute()
         return render_template('auth/respond.json',state='success')
-    except:
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
         return render_template('auth/respond.json',state='fail',message='操作失败')
 
 
@@ -89,6 +92,7 @@ def deleteTask(finger):
 @login_required
 def newTask():
     form = NewTaskForm()
+    form.delete.data = 0
     if request.method == 'POST':
 
         if request.form['finger']:
@@ -106,9 +110,9 @@ def newTask():
         task.tables = request.form['tables']
         task.target = request.form['target']
         if 'delete' in request.form:
-            task.delete = 1
+            task.d = 1
         else:
-            task.delete = 0
+            task.d = 0
         task.save()
         return render_template('auth/respond.json',state="success")
     return render_template('fragment/new_task.html', form = form)
@@ -129,7 +133,7 @@ def editTask(finger):
     form.tables.data = task.tables
     form.target.data = task.target
     form.count.data = task.count
-    form.delete.data = task.delete
+    form.delete.data = task.d
     return render_template('fragment/new_task.html', form=form)
 
 # #查看job详情
