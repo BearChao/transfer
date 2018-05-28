@@ -75,7 +75,7 @@ def get_date_():
     if not t:
         return None
     boost = pickle.load(open('conf/boost', 'rb'))
-    time = datetime.datetime.now()
-    time = boost + datetime.timedelta(days =t)
+    #time = datetime.datetime.now()
+    time = boost + datetime.timedelta(days = t)
     return time
 

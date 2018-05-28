@@ -26,6 +26,7 @@ function loadURL(url) {
             title = $('nav a[href="' + '#' + url + '"]').find('span').text();
             if (url != common_conf.defaultHash && title != '') {
                 $breadcrumb.html('<li><i class="fa fa-home"></i>工作台</li><li>' + title + '</li>');
+                //clearInterval("timeTicket");
             } else {
                 $breadcrumb.html('<li><i class="fa fa-home"></i>工作台</li>');
             }

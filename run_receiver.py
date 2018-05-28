@@ -21,7 +21,7 @@ from control.put_data.call_func import putData
 def run(file):
     list = file.split('.')
     id = int(list[-1])
-    file_name = file.split('/')[-1]
+    #file_name = file.split('/')[-1]
     new_file = file[:-(len(list[-1])+1)]
     os.rename(file,new_file)
     pass

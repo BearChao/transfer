@@ -7,5 +7,5 @@
 # @Software: PyCharm
 
 
-#minute
-SYSOATHTIME=180
+#days
+SYSOATHTIME=720
